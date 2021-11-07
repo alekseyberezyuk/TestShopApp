@@ -47,7 +47,7 @@ packages/
 chrome-profiler-events*.json
 
 # IDEs and editors
-/.idea
+/TestShopApp-Client/.idea
 .project
 .classpath
 .c9/
@@ -64,15 +64,15 @@ chrome-profiler-events*.json
 .history/*
 
 # misc
-/.angular/cache
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
+/TestShopApp-Client/.angular/cache
+/TestShopApp-Client/.sass-cache
+/TestShopApp-Client/connect.lock
+/TestShopApp-Client/coverage
+/TestShopApp-Client/libpeerconnection.log
 npm-debug.log
 yarn-error.log
 testem.log
-/typings
+/TestShopApp-Client/typings
 
 # System Files
 .DS_Store
