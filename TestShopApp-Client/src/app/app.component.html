@@ -1,3 +1,7 @@
 <div>
+  <select (change)="langChanged($event)">
+    <option value="en-US">English</option>
+    <option value="ru-RU">Russian</option>
+  </select>
   <router-outlet></router-outlet>
 </div>
