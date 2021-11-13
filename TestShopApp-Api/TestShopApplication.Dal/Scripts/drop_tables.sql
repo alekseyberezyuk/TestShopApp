@@ -1,4 +1,3 @@
-use [testShopApp-db]
 drop table user_details
 drop table user_preferences
 drop table order_content

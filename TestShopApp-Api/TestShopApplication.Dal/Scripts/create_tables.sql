@@ -1,5 +1,3 @@
-use [testShopApp-db]
-
 create table user_roles
 (
     id  uniqueidentifier not null
