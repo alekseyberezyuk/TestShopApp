@@ -1,11 +1,16 @@
-<div class = "container">
-    <label translate>username</label>
+<div class="container">
+<mat-card class="login">
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>{{ 'username' | translate }}</mat-label>
+        <input matInput type="email">
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>{{ 'enter-pass' | translate }}</mat-label>
+        <input matInput type="password">
+    </mat-form-field>
     <br>
-    <input type="text">
-    <br> <br>
-    <label translate>enter-pass</label>
     <br>
-    <input type="text">
-    <br> <br>
-    <button translate>send</button>
+    <button mat-raised-button color="primary" (click)="btnClicked()">{{ 'send' | translate }}</button>
+    <br>
+</mat-card>
 </div>

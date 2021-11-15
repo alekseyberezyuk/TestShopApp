@@ -12,6 +12,10 @@ import { Error404Component } from './pages/errors/error404/error404.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ToastrModule } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './angular-material/angular-material.module';
 
 @NgModule({
   declarations: [
@@ -33,12 +37,19 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
             useFactory: HttpLoaderFactory,
             deps: [HttpClient]
         }
-    })
+    }),
+    BrowserAnimationsModule,
+    CommonModule,
+    ToastrModule.forRoot(),
+    MaterialModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
+
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {

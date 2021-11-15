@@ -1,7 +1,7 @@
 <div>
-  <select (change)="langChanged($event)">
-    <option value="en-US">English</option>
-    <option value="ru-RU">Russian</option>
+  <select class="select-lang" (change)="langChanged($event)">
+    <option value="en-US">{{ 'english' | translate }}</option>
+    <option value="ru-RU">{{ 'russian' | translate }}</option>
   </select>
   <router-outlet></router-outlet>
 </div>
