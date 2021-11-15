@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +8,16 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor( private toastr: ToastrService) {
+
+  }
+
+  btnClicked() {
+    this.toastr.success('Hello world!', 'Toastr fun!', {
+      positionClass: 'toast-top-center',
+      closeButton: true
+    });
+  }
 
   ngOnInit(): void {
   }
