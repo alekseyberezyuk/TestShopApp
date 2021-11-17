@@ -12,7 +12,9 @@ namespace TestShopApplication.Api.DependencyInjection
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddSingleton<IAuthRepository>(sp => new AuthRepository(connectionString));
+            services.AddSingleton<IItemsRepository>(sp => new ItemsRepository(connectionString));
             services.AddSingleton<AuthService>();
+            services.AddSingleton<ItemsService>();
             return services;
         }
     }
