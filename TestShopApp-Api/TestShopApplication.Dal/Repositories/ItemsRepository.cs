@@ -53,7 +53,7 @@ namespace TestShopApplication.Dal.Repositories
         {
             var request = $"UPDATE [items] " +
                           $"SET name='{item.Name}', description='{item.Description}', " +
-                          $"price={item.Price}, category_id={item.CategoryId})" +
+                          $"price={item.Price}, category_id={item.CategoryId}" +
                           $"WHERE item_id='{item.ItemId}'";
             using var connection = new SqlConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request);
