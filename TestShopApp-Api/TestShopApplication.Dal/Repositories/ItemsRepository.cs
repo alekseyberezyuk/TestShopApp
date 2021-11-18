@@ -68,5 +68,14 @@ namespace TestShopApplication.Dal.Repositories
             var result = await connection.ExecuteAsync(request);
             return result >= 0;
         }
+
+        public async Task<bool> Exists(string name)
+        {
+            var request = $"SELECT count(*) FROM [items]" +
+                          $"WHERE name='{name}'";
+            using var connection = new SqlConnection(ConnectionString);
+            var result = await connection.QuerySingleAsync<int>(request);
+            return result > 0;
+        }
     }
 }

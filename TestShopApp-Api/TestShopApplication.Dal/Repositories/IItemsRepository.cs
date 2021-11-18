@@ -12,5 +12,6 @@ namespace TestShopApplication.Dal.Repositories
         Task<bool> TryAdd(ItemWithCategory item);
         Task<bool> TryUpdate(ItemWithCategory item);
         Task<bool> TryDelete(Guid itemId);
+        Task<bool> Exists(string name);
     }
 }

@@ -35,14 +35,22 @@ namespace TestShopApplication.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateItem([FromBody]ItemWithCategory item)
         {
-            return Ok(await _itemsService.Create(item));
+            var result = await _itemsService.Create(item);
+            if(result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
         }
         
         [HttpPut]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateItem([FromBody]ItemWithCategory item)
         {
-            return Ok(await _itemsService.Update(item));
+            var result = await _itemsService.Update(item);
+            if(result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
         }
         
         [HttpDelete]

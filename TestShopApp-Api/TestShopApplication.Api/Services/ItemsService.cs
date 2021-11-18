@@ -1,4 +1,5 @@
 using System;
+using TestShopApplication.Api.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TestShopApplication.Dal.Common;
@@ -24,19 +25,57 @@ namespace TestShopApplication.Api.Services
             return await _itemsRepository.GetById(itemId);
         }
         
-        public async Task<bool> Create(ItemWithCategory item)
+        public async Task<Response> Create(ItemWithCategory item)
         {
-            return await _itemsRepository.TryAdd(item);
+            if (await Exists(item.Name))
+                return new Response
+                {
+                    Success = false,
+                    Errors = new List<string>
+                    {
+                        $"Failed to create. Item with name {item.Name} already exists."
+                    }
+                };
+
+            var addResult = await _itemsRepository.TryAdd(item);
+
+            return new Response
+            {
+                Success = addResult
+            };
         }
         
-        public async Task<bool> Update(ItemWithCategory item)
+        public async Task<Response> Update(ItemWithCategory item)
         {
-            return await _itemsRepository.TryUpdate(item);
+            if (await Exists(item.Name))
+                return new Response
+                {
+                    Success = false,
+                    Errors = new List<string>
+                    {
+                        $"Unable to update.Item with name {item.Name} already exists."
+                    }
+                };
+            
+            var updateResult =  await _itemsRepository.TryUpdate(item);
+
+            return new Response
+            {
+                Success = updateResult
+            };
         }
 
         public async Task<bool> Delete(Guid itemId)
         {
             return await _itemsRepository.TryDelete(itemId);
+        }
+
+        private async Task<bool> Exists(string name)
+        {
+            if (await _itemsRepository.Exists(name))
+                return true;
+
+            return false;
         }
     }
 }
