@@ -2,11 +2,11 @@
 <mat-card class="login">
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>{{ 'username' | translate }}</mat-label>
-        <input matInput type="email">
+        <input matInput type="email" [(ngModel)]="creds.username">
     </mat-form-field>
     <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>{{ 'enter-pass' | translate }}</mat-label>
-        <input matInput type="password">
+        <input matInput type="password" [(ngModel)]="creds.password">
     </mat-form-field>
     <br>
     <br>
@@ -14,3 +14,4 @@
     <br>
 </mat-card>
 </div>
+

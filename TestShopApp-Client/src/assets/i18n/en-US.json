@@ -3,5 +3,6 @@
 	"enter-pass": "Enter password",
 	"russian": "Russian",
 	"send": "Send",
-	"username": "Username"
+	"username": "Username",
+	"auth-fail": "Invalid username or password"
 }
