@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestShopApplication.Api.Services;
 
@@ -8,6 +9,7 @@ namespace TestShopApplication.Api.Controllers
 {
     [Route("orders")]
     [ApiController]
+    [Authorize(Roles = "User")]
     public class OrdersController : Controller
     {
         private readonly OrdersService _ordersService;

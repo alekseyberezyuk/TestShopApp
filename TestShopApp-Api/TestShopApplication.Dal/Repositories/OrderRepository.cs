@@ -19,9 +19,9 @@ namespace TestShopApplication.Dal.Repositories
 
         public async Task<IEnumerable<OrderItemDto>> GetAll(Guid orderId)
         {
-            var request = $"SELECT [order_content].item_id as itemId, name, description, price, quantity" +
-                          $"FROM [order_content]" +
-                          $"LEFT JOIN [items] ON [order_content].item_id = [items].item_id" +
+            var request = $"SELECT [order_content].item_id as itemId, name, description, price, quantity " +
+                          $"FROM [order_content] " +
+                          $"LEFT JOIN [items] ON [order_content].item_id = [items].item_id " +
                           $"WHERE order_id = @orderId";
             using var connection = new SqlConnection(ConnectionString);
             var results = await connection.QueryAsync<OrderItemDto>(request, 
@@ -61,8 +61,8 @@ namespace TestShopApplication.Dal.Repositories
 
         public async Task<bool> UpdateOrderStatus(Guid orderId, OrderStatus status)
         {
-            var request = $"UPDATE [orders]" +
-                          $"SET status=@status" +
+            var request = $"UPDATE [orders] " +
+                          $"SET status=@status " +
                           $"WHERE order_id=@orderId";
 
             using var connection = new SqlConnection(ConnectionString);
