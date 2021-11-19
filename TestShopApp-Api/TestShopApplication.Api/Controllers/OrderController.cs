@@ -31,7 +31,7 @@ namespace TestShopApplication.Api.Controllers
             return Ok(await _ordersService.CreateOrder(userId, orderItems));
         }
 
-        [HttpPatch("{order_id}")]
+        [HttpPatch("{order_id}/cancel")]
         public async Task<IActionResult> CancelOrder(
             [FromRoute(Name = "order_id")] Guid orderId)
         {

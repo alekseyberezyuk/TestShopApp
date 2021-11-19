@@ -44,7 +44,7 @@ namespace TestShopApplication.Dal.Repositories
             });
             if (orderCreationResult == 0)
                 return Guid.Empty;
-            var insertOrderItemsRequest = $"INSERT INTO [order_items](order_id, item_id, quantity) " +
+            var insertOrderItemsRequest = $"INSERT INTO [order_content](order_id, item_id, quantity) " +
                                           $"VALUES (@orderId, @itemId, @quantity)";
             var itemsCreationResult = await connection.ExecuteAsync(insertOrderItemsRequest, items.Select(item => new
             {
