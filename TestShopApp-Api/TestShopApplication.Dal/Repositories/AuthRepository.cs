@@ -24,7 +24,7 @@ namespace TestShopApplication.Dal.Repositories
                         WHERE u.username = @username";
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
-            var dbEntry = (await connection.QueryAsync<UserSecurityDetails>(query, new { username }))?.FirstOrDefault();
+            var dbEntry = await connection.QuerySingleAsync<UserSecurityDetails>(query, new { username });
             dbEntry.UserName = username;
             return dbEntry;
         }

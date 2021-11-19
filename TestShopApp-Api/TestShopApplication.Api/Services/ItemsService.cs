@@ -15,9 +15,9 @@ namespace TestShopApplication.Api.Services
             _itemsRepository = itemsRepository;
         }
         
-        public async Task<IEnumerable<Item>> GetAll(int? categoryId)
+        public async Task<IEnumerable<Item>> GetAll(FilterParameters filterParameters)
         {
-            return await _itemsRepository.GetAll(categoryId ?? 0);
+            return await _itemsRepository.GetAll(filterParameters);
         }
         
         public async Task<Item> GetById(Guid itemId)
