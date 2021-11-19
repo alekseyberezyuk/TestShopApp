@@ -16,6 +16,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './angular-material/angular-material.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -40,9 +41,13 @@ import { MaterialModule } from './angular-material/angular-material.module';
     }),
     BrowserAnimationsModule,
     CommonModule,
-    ToastrModule.forRoot(),
-    MaterialModule
-
+    ToastrModule.forRoot({
+      timeOut: 1200,
+      positionClass: 'toast-top-center',
+      preventDuplicates: true,
+    }),
+    MaterialModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

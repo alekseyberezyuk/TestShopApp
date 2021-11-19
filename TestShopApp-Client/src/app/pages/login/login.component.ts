@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
+import { firstValueFrom } from 'rxjs';
 import { AuthResponse } from 'src/app/models/authResponse';
+import { Credentials } from 'src/app/models/credentials';
 import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
@@ -9,38 +12,25 @@ import { AuthService } from 'src/app/service/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  creds = {
-    username: '',
-    password: ''
-  };
+  // TODO: later remove hardcoded credentials
+  public creds: Credentials = new Credentials('user@testshopapp.com', 'User12#');
  
-  constructor(private toastr: ToastrService, private authService: AuthService) {
+  constructor(private toastr: ToastrService, private authService: AuthService, private translateService: TranslateService) {
   }
   
-  getUserName(event) {
-     this.creds.username = event.target.value;
-  }
-  
-  getUserPassword(event) {
-    this.creds.password = event.target.value;
-  }
-
   btnClicked() {
     this.authService.authenticate(this.creds).subscribe({
-      next: data => {
+      next: async data => {
         const authResponse: AuthResponse = data;
-
+        
         if(authResponse.isSuccess) {
-          console.log(authResponse.token);
-          this.toastr.success('Success', '', {
-            positionClass: 'toast-top-center',
-            closeButton: true
-          });
+          this.toastr.clear();
+          // .........................
+          // TODO: Add redirect to page 'main'
+          // .........................
         } else {
-          this.toastr.warning('Invalid username or password', '', {
-            positionClass: 'toast-top-center',
-            closeButton: true
-          });
+          const errorMsg = await firstValueFrom(this.translateService.get('auth-fail'));
+          this.toastr.warning(errorMsg);
         }
       },
       error: (error) => console.error(error)
