@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TestShopApplication.Api.Models;
 using TestShopApplication.Api.Services;
 using TestShopApplication.Dal.Common;
 
@@ -29,6 +31,12 @@ namespace TestShopApplication.Api.Controllers
         public async Task<IActionResult> AddToCart([FromRoute(Name = "itemId")]string itemId, 
             [FromRoute(Name = "quantity")]int quantity)
         {
+            if (quantity < 0)
+                return BadRequest(new Response<Guid>
+                {
+                    Success = false,
+                    Errors = new List<string> {"The quantity must be more than 0."}
+                });
             var userId = GetUserId();
             return Ok(await _userCartService.AddItemToCart(new ShoppingCartItem
             {
@@ -42,6 +50,13 @@ namespace TestShopApplication.Api.Controllers
         public async Task<IActionResult> DeleteFromCart([FromRoute(Name = "itemId")] Guid itemId,
             [FromRoute(Name = "quantity")] int quantity)
         {
+            if (quantity < 0)
+                return BadRequest(new Response<Guid>
+                {
+                    Success = false,
+                    Errors = new List<string> {"The quantity must be more than 0."}
+                });
+            
             var userId = GetUserId();
             return Ok(await _userCartService.DeleteItemToCart(new ShoppingCartItem
             {
