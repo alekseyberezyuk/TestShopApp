@@ -22,6 +22,7 @@ namespace TestShopApplication.Api.Services
 
         public async Task<Response<Guid>> AddItemToCart(ShoppingCartItem item)
         {
+            item.CreatedAt = DateTime.UtcNow;
             var id = await _userCartRepository.AddItemToCart(item);
             if (id == Guid.Empty)
                 return new Response<Guid>
@@ -38,6 +39,7 @@ namespace TestShopApplication.Api.Services
 
         public async Task<Response<bool>> DeleteItemToCart(ShoppingCartItem item)
         {
+            item.CreatedAt = DateTime.UtcNow;
             var result = await _userCartRepository.RemoveItemFromCart(item);
             if (!result)
                 return new Response<bool>

@@ -34,14 +34,14 @@ namespace TestShopApplication.Dal.Repositories
             var request = $"IF EXISTS(SELECT * FROM [user_carts] WHERE item_id=@itemId " +
                           $"AND user_id=@userId)\r\n" +
                           $"BEGIN\r\n" +
-                          $"UPDATE [user_carts] " +
-                          $"SET quantity=quantity+@quantity, createdAt=@createdAt" +
-                          $"WHERE item_id=@itemId AND user_id=@userId\r\n" +
+                              $"UPDATE [user_carts] " +
+                              $"SET quantity=quantity+@quantity, createdAt=@createdAt " +
+                              $"WHERE item_id=@itemId AND user_id=@userId\r\n" +
                           $"END\r\n" +
                           $"ELSE\r\n" +
                           $"BEGIN\r\n" +
-                          $"INSERT INTO [user_carts](item_id, user_id, quantity, createdAt " +
-                          "VALUES(@itemId, @userId, @quantity, @createdAt)" +
+                              $"INSERT INTO [user_carts](item_id, user_id, quantity, createdAt) " +
+                              "VALUES (@itemId, @userId, @quantity, @createdAt)" +
                           $"END\r\n";
             using var connection = new SqlConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
@@ -57,8 +57,8 @@ namespace TestShopApplication.Dal.Repositories
 
         public async ValueTask<bool> RemoveItemFromCart(ShoppingCartItem item)
         {
-            var request = $"IF EXISTS((select quantity from user_carts " +
-                            $"WHERE item_id = @itemId AND user_id = @userId) == @quantity)\r\n" +
+            var request = $"IF ((select quantity from user_carts " +
+                            $"WHERE item_id=@itemId AND user_id=@userId) = @quantity)\r\n" +
                           $"BEGIN\r\n" +
                             $"DELETE FROM user_carts "+
                             $"WHERE item_id=@itemId AND user_id=@userId\r\n"+

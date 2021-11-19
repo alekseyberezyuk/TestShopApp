@@ -27,7 +27,7 @@ namespace TestShopApplication.Api.Controllers
 
         [HttpPost("add/{itemId}/{quantity}")]
         public async Task<IActionResult> AddToCart([FromRoute(Name = "itemId")]string itemId, 
-            [FromRoute(Name = "itemId")]int quantity)
+            [FromRoute(Name = "quantity")]int quantity)
         {
             var userId = GetUserId();
             return Ok(await _userCartService.AddItemToCart(new ShoppingCartItem
@@ -40,7 +40,7 @@ namespace TestShopApplication.Api.Controllers
 
         [HttpDelete("delete/{itemId}/{quantity}")]
         public async Task<IActionResult> DeleteFromCart([FromRoute(Name = "itemId")] Guid itemId,
-            [FromRoute(Name = "itemId")] int quantity)
+            [FromRoute(Name = "quantity")] int quantity)
         {
             var userId = GetUserId();
             return Ok(await _userCartService.DeleteItemToCart(new ShoppingCartItem
