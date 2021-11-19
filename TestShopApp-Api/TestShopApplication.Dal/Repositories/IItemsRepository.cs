@@ -7,7 +7,7 @@ namespace TestShopApplication.Dal.Repositories
 {
     public interface IItemsRepository
     {
-        Task<IEnumerable<Item>> GetAll(int categoryId);
+        Task<IEnumerable<Item>> GetAll(FilterParameters filterParameters);
         Task<Item> GetById(Guid itemId);
         Task<bool> TryAdd(ItemWithCategory item);
         Task<bool> TryUpdate(ItemWithCategory item);
