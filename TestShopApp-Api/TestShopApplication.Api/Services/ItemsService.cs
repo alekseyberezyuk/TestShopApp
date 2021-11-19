@@ -25,10 +25,10 @@ namespace TestShopApplication.Api.Services
             return await _itemsRepository.GetById(itemId);
         }
         
-        public async Task<Response> Create(ItemWithCategory item)
+        public async Task<Response<Guid>> Create(ItemWithCategory item)
         {
             if (await Exists(item.Name))
-                return new Response
+                return new Response<Guid>
                 {
                     Success = false,
                     Errors = new List<string>
@@ -39,16 +39,16 @@ namespace TestShopApplication.Api.Services
 
             var addResult = await _itemsRepository.TryAdd(item);
 
-            return new Response
+            return new Response<Guid>
             {
                 Success = addResult
             };
         }
         
-        public async Task<Response> Update(ItemWithCategory item)
+        public async Task<Response<bool>> Update(ItemWithCategory item)
         {
             if (await Exists(item.Name))
-                return new Response
+                return new Response<bool>
                 {
                     Success = false,
                     Errors = new List<string>
@@ -59,7 +59,7 @@ namespace TestShopApplication.Api.Services
             
             var updateResult =  await _itemsRepository.TryUpdate(item);
 
-            return new Response
+            return new Response<bool>
             {
                 Success = updateResult
             };

@@ -15,9 +15,11 @@ namespace TestShopApplication.Api.DependencyInjection
             services.AddSingleton<IItemsRepository>(sp => new ItemsRepository(connectionString));
             services.AddSingleton<IOrdersRepository>(sp => new OrdersRepository(connectionString));
             services.AddSingleton<IOrderRepository>(sp => new OrderRepository(connectionString));
+            services.AddSingleton<IUserCartRepository>(sp => new UserCartRepository(connectionString));
             services.AddSingleton<AuthService>();
             services.AddSingleton<ItemsService>();
             services.AddSingleton<OrdersService>();
+            services.AddSingleton<UserCartService>();
             return services;
         }
     }
