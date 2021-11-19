@@ -59,10 +59,10 @@ namespace TestShopApplication.Api.Services
             return await _orderRepository.CreateOrder(order, userId, orderItems);
         }
 
-        public async Task<Response> CancelOrder(Guid orderId)
+        public async Task<Response<bool>> CancelOrder(Guid orderId)
         {
             var result = await _orderRepository.UpdateOrderStatus(orderId, OrderStatus.Cancelled);
-            return new Response
+            return new Response<bool>
             {
                 Success = result
             };
