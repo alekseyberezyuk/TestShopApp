@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TestShopApplication.Api.Models;
 using TestShopApplication.Api.Services;
 using TestShopApplication.Dal.Common;
 
@@ -58,7 +59,7 @@ namespace TestShopApplication.Api.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateItem([FromBody]ItemWithCategory item)
+        public async Task<IActionResult> CreateItem([FromBody]ItemModel item)
         {
             var result = await _itemsService.Create(item);
             if (result.Success)
@@ -67,22 +68,23 @@ namespace TestShopApplication.Api.Controllers
             }
             return BadRequest(result);
         }
-        
-        [HttpPut]
+
+        [HttpPut("{itemId}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateItem([FromBody]ItemWithCategory item)
+        public async Task<IActionResult> UpdateItem([FromRoute(Name = "itemId")]Guid itemId, [FromBody]ItemModel item)
         {
-            var result = await _itemsService.Update(item);
+            var result = await _itemsService.Update(itemId, item);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
-        
-        [HttpDelete]
+
+        [HttpDelete("{itemId}")]
+
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteItem([FromQuery] Guid itemId)
+        public async Task<IActionResult> DeleteItem([FromRoute(Name = "itemId")] Guid itemId)
         {
             return Ok(await _itemsService.Delete(itemId));
         }

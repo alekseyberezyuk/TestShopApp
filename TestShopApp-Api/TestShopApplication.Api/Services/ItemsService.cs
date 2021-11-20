@@ -25,7 +25,7 @@ namespace TestShopApplication.Api.Services
             return await _itemsRepository.GetById(itemId);
         }
         
-        public async Task<Response<Guid>> Create(ItemWithCategory item)
+        public async Task<Response<Guid>> Create(ItemModel item)
         {
             if (await Exists(item.Name))
                 return new Response<Guid>
@@ -37,15 +37,23 @@ namespace TestShopApplication.Api.Services
                     }
                 };
 
-            var addResult = await _itemsRepository.TryAdd(item);
+            var addResult = await _itemsRepository.TryAdd(new ItemWithCategory
+            {
+                ItemId = Guid.NewGuid(),
+                Name = item.Name,
+                Description = item.Description,
+                Price = item.Price,
+                CategoryId = item.CategoryId
+            });
 
             return new Response<Guid>
             {
-                Success = addResult
+                Result = addResult,
+                Success = addResult != Guid.Empty
             };
         }
         
-        public async Task<Response<bool>> Update(ItemWithCategory item)
+        public async Task<Response<bool>> Update(Guid itemId, ItemModel item)
         {
             if (await Exists(item.Name))
                 return new Response<bool>
@@ -57,7 +65,14 @@ namespace TestShopApplication.Api.Services
                     }
                 };
             
-            var updateResult =  await _itemsRepository.TryUpdate(item);
+            var updateResult =  await _itemsRepository.TryUpdate(new ItemWithCategory
+            {
+                ItemId = itemId,
+                Name = item.Name,
+                Description = item.Description,
+                Price = item.Price,
+                CategoryId = item.CategoryId
+            });
 
             return new Response<bool>
             {
