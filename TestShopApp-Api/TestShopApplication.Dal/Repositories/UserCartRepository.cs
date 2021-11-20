@@ -43,7 +43,7 @@ namespace TestShopApplication.Dal.Repositories
                               $"INSERT INTO [user_carts](item_id, user_id, quantity, createdAt) " +
                               "VALUES (@itemId, @userId, @quantity, @createdAt)" +
                           $"END\r\n";
-            using var connection = new SqlConnection(ConnectionString);
+            await using var connection = new SqlConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
                 {
                     itemId = item.ItemId,

@@ -31,12 +31,14 @@ namespace TestShopApplication.Api.Controllers
         public async Task<IActionResult> AddToCart([FromRoute(Name = "itemId")]string itemId, 
             [FromRoute(Name = "quantity")]int quantity)
         {
-            if (quantity < 0)
+            if (quantity <= 0)
+            {
                 return BadRequest(new Response<Guid>
                 {
                     Success = false,
                     Errors = new List<string> {"The quantity must be more than 0."}
                 });
+            }
             var userId = GetUserId();
             return Ok(await _userCartService.AddItemToCart(new ShoppingCartItem
             {
@@ -50,7 +52,7 @@ namespace TestShopApplication.Api.Controllers
         public async Task<IActionResult> DeleteFromCart([FromRoute(Name = "itemId")] Guid itemId,
             [FromRoute(Name = "quantity")] int quantity)
         {
-            if (quantity < 0)
+            if (quantity <= 0)
                 return BadRequest(new Response<Guid>
                 {
                     Success = false,

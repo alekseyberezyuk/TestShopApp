@@ -9,7 +9,7 @@ namespace TestShopApplication.Dal.Repositories
     {
         Task<IEnumerable<Item>> GetAll(FilterParameters filterParameters);
         ValueTask<Item> GetById(Guid itemId);
-        ValueTask<bool> TryAdd(ItemWithCategory item);
+        ValueTask<Guid> TryAdd(ItemWithCategory item);
         ValueTask<bool> TryUpdate(ItemWithCategory item);
         ValueTask<bool> TryDelete(Guid itemId);
         ValueTask<bool> Exists(string name);

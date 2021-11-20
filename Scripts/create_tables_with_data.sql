@@ -70,7 +70,8 @@ create table items
 	category_id int
 		constraint items_item_categories_category_id_fk
 			references item_categories,
-	price       money
+	price       money,
+	is_deleted bit
 )
 go
 
@@ -136,12 +137,12 @@ INSERT INTO [dbo].[item_categories] ([category_name])
 DECLARE @item_id1 as uniqueidentifier = NEWID();
 DECLARE @item_id3 as uniqueidentifier = NEWID();
 
-INSERT INTO [dbo].[items] ([item_id],[name],[description],[category_id],[price])
-		VALUES (@item_id1, 'A beautiful pure red agate', '100% pure genuine South Red Agate gems from best Gremlin and Wizard lands. You''ll never regret buying it.', 2, 155.44),
-			(NEWID(), 'A cheap agate', 'A cheap agate found by a clay Golem in no man''s land. The agate was somewhat cleaned and refined but is still only a mediocre quality', 2, 25.00),
-			(@item_id3, '1.00-Carat Oval Cut Diamond', 'A 100% pure genuine Dwarf-made Oval Cut Diamond of finest quality', 3, 1077),
-			(NEWID(), 'Phoenix diamond', 'A magically enchanted phoenix diamond from not less than golden age of phoenix empire', 3, 2620),
-			(NEWID(), 'A raw diamond', 'A raw diamond is just a raw diamond', 3, 420)
+INSERT INTO [dbo].[items] ([item_id],[name],[description],[category_id],[price],[is_deleted])
+		VALUES (@item_id1, 'A beautiful pure red agate', '100% pure genuine South Red Agate gems from best Gremlin and Wizard lands. You''ll never regret buying it.', 2, 155.44, 0),
+			(NEWID(), 'A cheap agate', 'A cheap agate found by a clay Golem in no man''s land. The agate was somewhat cleaned and refined but is still only a mediocre quality', 2, 25.00, 0),
+			(@item_id3, '1.00-Carat Oval Cut Diamond', 'A 100% pure genuine Dwarf-made Oval Cut Diamond of finest quality', 3, 1077,0),
+			(NEWID(), 'Phoenix diamond', 'A magically enchanted phoenix diamond from not less than golden age of phoenix empire', 3, 2620,0),
+			(NEWID(), 'A raw diamond', 'A raw diamond is just a raw diamond', 3, 420, 0)
 
 INSERT INTO [dbo].[user_carts] ([item_id],[user_id],[quantity],[createdAt])
 		VALUES (@item_id1, '8c9fd3a8-d0d8-4c0c-9bf3-dae9eeffc87c', 2, GETDATE()),

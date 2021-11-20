@@ -24,17 +24,17 @@ namespace TestShopApplication.Dal.Repositories
             var withFilter = filterParameters.MinPrice > 0 || filterParameters.MaxPrice != null || withCategories;
             var sb = new StringBuilder($@"SELECT item_id, name, description, price, [items].category_id, category_name FROM [items]
                                           LEFT JOIN [item_categories]
-                                            ON [items].category_id=[item_categories].category_id ");
+                                            ON [items].category_id=[item_categories].category_id 
+                                            WHERE is_deleted=0");
             var parameters = new DynamicParameters();
 
             if (withFilter)
             {
                 bool parameterAdded = false;
-                sb.Append("WHERE ");
 
                 if (filterParameters.MinPrice > 0)
                 {
-                    sb.Append("[items].price > @minPrice ");
+                    sb.Append(" AND [items].price > @minPrice ");
                     parameters.Add("minPrice", filterParameters.MinPrice);
                     parameterAdded = true;
                 }
@@ -66,6 +66,7 @@ namespace TestShopApplication.Dal.Repositories
                     sb.Append(") ");
                 }
             }
+            
             var query = sb.ToString().TrimEnd(',', ' ');
             using var connection = new SqlConnection(ConnectionString);
             var results = await connection.QueryAsync<Item>(query, parameters);
@@ -76,16 +77,16 @@ namespace TestShopApplication.Dal.Repositories
         {
             string query = $"SELECT item_id as ItemId, name, description, price, i.category_id as categoryId, category_name as categoryName FROM [items] i " +
                            $"LEFT JOIN [item_categories] ic ON i.category_id = ic.category_id " +
-                           $"WHERE item_id=@itemId";
+                           $"WHERE item_id=@itemId AND is_deleted=0";
             using var connection = new SqlConnection(ConnectionString);
             var result = await connection.QuerySingleAsync<Item>(query, new {itemId});
             return result;
         }
 
-        public async ValueTask<bool> TryAdd(ItemWithCategory item)
+        public async ValueTask<Guid> TryAdd(ItemWithCategory item)
         {
-            var request = $"INSERT INTO [items] (item_id, name, description, price, category_id)" +
-                          $"VALUES(@itemId, @name, @description, @price, @categoryId)";
+            var request = $"INSERT INTO [items] (item_id, name, description, price, category_id, is_deleted)" +
+                          $"VALUES(@itemId, @name, @description, @price, @categoryId, 0)";
             using var connection = new SqlConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
             {
@@ -95,7 +96,7 @@ namespace TestShopApplication.Dal.Repositories
                 price = item.Price,
                 categoryId = item.CategoryId
             });
-            return result >= 0;
+            return result > 0 ? item.ItemId : Guid.Empty;
         }
 
         public async ValueTask<bool> TryUpdate(ItemWithCategory item)
@@ -118,7 +119,8 @@ namespace TestShopApplication.Dal.Repositories
 
         public async ValueTask<bool> TryDelete(Guid itemId)
         {
-            var request = $"DELETE FROM [items]"+
+            var request = $"UPDATE [items]" +
+                          $"SET is_deleted=1"+
                           $"WHERE item_id=@itemId";
             using var connection = new SqlConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new {itemId});
