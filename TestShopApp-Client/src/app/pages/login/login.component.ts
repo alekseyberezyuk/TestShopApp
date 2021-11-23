@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   // TODO: later remove hardcoded credentials
   public creds: Credentials = new Credentials('user@testshopapp.com', 'User12#');
  
-  constructor(private toastr: ToastrService, private authService: AuthService, private translateService: TranslateService) {
+  constructor(private toastr: ToastrService, private authService: AuthService, private translateService: TranslateService, private router: Router) {
   }
   
   btnClicked() {
@@ -25,9 +26,8 @@ export class LoginComponent implements OnInit {
         
         if(authResponse.isSuccess) {
           this.toastr.clear();
-          // .........................
-          // TODO: Add redirect to page 'main'
-          // .........................
+          this.router.navigateByUrl('main');
+
         } else {
           const errorMsg = await firstValueFrom(this.translateService.get('auth-fail'));
           this.toastr.warning(errorMsg);
@@ -38,5 +38,8 @@ export class LoginComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    if(this.authService.isAuthenticated()) {
+      this.router.navigateByUrl('main'); 
+    }
   }
 }
