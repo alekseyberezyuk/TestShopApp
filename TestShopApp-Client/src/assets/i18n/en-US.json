@@ -4,5 +4,17 @@
 	"russian": "Russian",
 	"send": "Send",
 	"username": "Username",
-	"auth-fail": "Invalid username or password"
+	"auth-fail": "Invalid username or password",
+	"en-US": "EN",
+	"ru-RU": "RU",
+	"search": "Search",
+	"filters": "Filters",
+	"hide-filters": "Hide filters",
+	"items-to-buy": "Available items:",
+	"menu": {
+		"account": "Account",
+		"store": "Store",
+		"orders": "Orders",
+		"logout": "Log out"
+	}
 }

@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './angular-material/angular-material.module';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
+import { TopBarPanelComponent } from './components/top-bar-panel/top-bar-panel.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AuthInterceptor } from './interceptors/auth-interceptor';
     LogoutComponent,
     ShoppingCartComponent,
     OrdersComponent,
-    Error404Component
+    Error404Component,
+    TopBarPanelComponent
   ],
   imports: [
     BrowserModule,

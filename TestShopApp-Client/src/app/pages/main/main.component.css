@@ -1,0 +1,48 @@
+.main-container {
+    display: flex;
+    width: 100%;
+}
+
+.filter-container {
+    display: flexbox;
+    width: 25%;
+    background-color: rgb(194, 194, 194);
+    text-align: center;
+}
+
+.items-page-container {
+    display: flexbox;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.container {    
+    height: 100%;
+    min-height: 800px;
+}
+
+.show-filters-btn {
+    position: absolute;
+    top:45%;
+    right: -10px;
+    z-index: 10;
+}
+
+.hide-filters-btn {
+    position: absolute;
+    top:45%;
+    right: 325px;
+    z-index: 10;
+}
+
+.example-card {
+    margin: auto;
+    margin-top: 2em;
+    max-width: 700px;
+    margin-bottom: 8px;
+}
+
+h1 {
+    text-align: center;
+    margin-left: auto;
+}

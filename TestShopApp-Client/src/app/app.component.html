@@ -1,7 +1,6 @@
-<div>
-  <select class="select-lang" (change)="langChanged($event)">
-    <option value="en-US">{{ 'english' | translate }}</option>
-    <option value="ru-RU">{{ 'russian' | translate }}</option>
-  </select>
-  <router-outlet></router-outlet>
+<div class="app-container">
+  <top-bar-panel [showMenu]="ShowTopBar"></top-bar-panel>
+  <main [@fadeAnimation]="o.isActivated ? o.activatedRoute : ''">
+    <router-outlet #o="outlet"></router-outlet>
+  </main>
 </div>

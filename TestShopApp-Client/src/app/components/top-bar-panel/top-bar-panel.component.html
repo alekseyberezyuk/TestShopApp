@@ -1,0 +1,50 @@
+<div class="top-bar-panel">
+    <div class="language-bar top-panel-bar">
+        <mat-form-field class="select-language" appearance="fill">
+            <mat-select [(ngModel)]="language">
+                <mat-option value="en-US" (click)="languageChanged()">{{ 'english' | translate }}</mat-option>
+                <mat-option value="ru-RU" (click)="languageChanged()">{{ 'russian' | translate }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="search-bar top-panel-bar" *ngIf="showMenu">
+        <mat-form-field appearance="fill" class="search-bar-input">
+            <mat-label>{{ 'search' | translate }}</mat-label>
+            <input matInput type="search" >
+        </mat-form-field>
+    </div>
+    <div class="menu-bar" *ngIf="showMenu">
+        <div class="menu-bar-container">
+            <span class="name">{{ getUserName }}</span>
+            &nbsp;&nbsp;&nbsp;
+            <button mat-icon-button >
+                <mat-icon>shopping_cart</mat-icon>
+            </button>
+            &nbsp;&nbsp;&nbsp;
+            <!-- Menu -->
+            <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()">
+              <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" [overlapTrigger]="false">
+                <span (mouseleave)="menuTrigger.closeMenu()">
+                    <button mat-menu-item>
+                        <mat-icon>account_box</mat-icon>
+                        <span>{{ 'menu.account' | translate }}</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>shopping_basket</mat-icon>
+                        <span>{{ 'menu.store' | translate }}</span>
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>business_center</mat-icon>
+                        <span>{{ 'menu.orders' | translate }}</span>
+                    </button>
+                    <button mat-menu-item (click)="logOutBtnClicked()">
+                        <mat-icon>exit_to_app</mat-icon>
+                        <span>{{ 'menu.logout' | translate }}</span>
+                    </button>
+                </span>
+            </mat-menu>            
+        </div>
+    </div>
+</div>

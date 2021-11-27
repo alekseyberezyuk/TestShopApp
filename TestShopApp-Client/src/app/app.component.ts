@@ -1,20 +1,26 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { fadeAnimation } from './animations/fade.animation';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [fadeAnimation]
 })
 export class AppComponent {
-  title = 'TestShopApp-Client';
+  showTopBar: boolean = true;
 
-  constructor(private translate: TranslateService) {
-    translate.setDefaultLang('en-US');
+  get ShowTopBar() {
+    return this.showTopBar;
   }
 
-  langChanged(event: any) {
-    console.log(`Language changed to: ${event.target.value}`);
-    this.translate.setDefaultLang(event.target.value);
+  constructor(translate: TranslateService, private router: Router) {    
+    router.events.subscribe(event => {
+      console.log(router.url);
+      this.showTopBar = router.url !== '' && router.url !== '/login';
+    });
+    translate.setDefaultLang('en-US');
   }
 }

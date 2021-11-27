@@ -1,0 +1,57 @@
+.top-bar-panel {
+    display: flex;
+    flex-wrap: wrap;
+    width: 98%;
+    height: 4em;
+    padding: 1em;
+    /* background-color: mistyrose; */
+}
+
+.top-panel-bar {
+    padding-left: 2em;
+    padding-top: 1px;
+    height: 100%;    
+}
+
+.language-bar {
+    display: flexbox;
+    width: 25em;
+    /* background-color: lavender; */
+}
+
+.search-bar {
+    display: flexbox;
+    text-align: center;
+    width: 40em;
+    /* background-color: khaki; */
+}
+
+.search-bar-input {
+    width: 26em;
+    text-align: center;
+}
+
+.menu-bar {
+    display: flexbox;
+    width: 25em;
+    
+    padding-top: 0.7em;
+    /* background-color: gray; */
+}
+
+.menu-bar-container {
+    display:inherit;
+    width: 90%;
+    height: auto;
+    text-align: right;
+    /* background-color: rgb(0, 255, 149); */
+}
+
+.mat-select {
+    text-align: center;
+}
+
+span.name {
+    vertical-align: middle;
+    font-size: 16px !important;
+}

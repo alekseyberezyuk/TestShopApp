@@ -14,6 +14,7 @@ export class AuthService {
     // TODO: Use rxjs methods 'pipe' and 'tap' to set the token here
     return this.http.post(environment.baseUrl + '/Auth', creds).pipe(tap(data => {
       this.setToken(data['token']);
+      this.saveUserName(creds.username);
     }));
   }
 
@@ -26,11 +27,20 @@ export class AuthService {
   }
 
   logOut() {
-    localStorage.setItem('testshopapp-token', '');
+    localStorage.removeItem('testshopapp-token');
+    localStorage.removeItem('testshopapp-username');
   }
 
   isAuthenticated() {
     const token = this.getToken();
     return token && token.length > 0;
   } 
+
+  saveUserName(username: string) {
+    localStorage.setItem('testshopapp-username', username);
+  }
+
+  getUserName() {
+    return localStorage.getItem('testshopapp-username');
+  }
 }
