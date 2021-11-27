@@ -1,4 +1,7 @@
 export const environment = {
     production: true,
-    baseUrl: 'https://'
+    baseUrl: 'https://',
+    appSettings: {
+        filterOpenedByDefault: false
+    }
 };

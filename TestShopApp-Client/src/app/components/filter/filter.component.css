@@ -1,0 +1,11 @@
+.filter-card {
+    margin: auto;
+    padding: 1em 1em 1em 1em;
+    width: 70%;
+    height: 80%;
+    min-height: 700px;
+}
+
+mat-slider {
+    width: 300px;
+}

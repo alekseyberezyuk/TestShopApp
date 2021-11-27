@@ -19,6 +19,8 @@ import { MaterialModule } from './angular-material/angular-material.module';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { TopBarPanelComponent } from './components/top-bar-panel/top-bar-panel.component';
+import { FilterComponent } from './components/filter/filter.component';
+import { AccountComponent } from './pages/account/account.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { TopBarPanelComponent } from './components/top-bar-panel/top-bar-panel.c
     ShoppingCartComponent,
     OrdersComponent,
     Error404Component,
-    TopBarPanelComponent
+    TopBarPanelComponent,
+    FilterComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,

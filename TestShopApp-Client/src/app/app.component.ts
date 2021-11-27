@@ -18,7 +18,6 @@ export class AppComponent {
 
   constructor(translate: TranslateService, private router: Router) {    
     router.events.subscribe(event => {
-      console.log(router.url);
       this.showTopBar = router.url !== '' && router.url !== '/login';
     });
     translate.setDefaultLang('en-US');

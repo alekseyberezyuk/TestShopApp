@@ -21,14 +21,14 @@
     min-height: 800px;
 }
 
-.show-filters-btn {
+.show-filter-btn {
     position: absolute;
     top:45%;
-    right: -10px;
+    right: -4px;
     z-index: 10;
 }
 
-.hide-filters-btn {
+.hide-filter-btn {
     position: absolute;
     top:45%;
     right: 325px;
@@ -36,7 +36,7 @@
 }
 
 .example-card {
-    margin: auto;
+    margin-left: 9em;
     margin-top: 2em;
     max-width: 700px;
     margin-bottom: 8px;

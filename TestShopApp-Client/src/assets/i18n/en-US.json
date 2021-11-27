@@ -2,6 +2,7 @@
 	"english": "English",
 	"enter-pass": "Enter password",
 	"russian": "Russian",
+	"login": "Log in",
 	"send": "Send",
 	"username": "Username",
 	"auth-fail": "Invalid username or password",
@@ -16,5 +17,13 @@
 		"store": "Store",
 		"orders": "Orders",
 		"logout": "Log out"
-	}
+	},
+	"filter": {
+		"category": "Category",
+		"from-price": "From price",
+		"to-price": "To price"
+	},
+	"whoops": "Whoops!",
+	"go-back": "Go back",
+	"error-404-msg": "You tried to reach a page that does not exist"
 }

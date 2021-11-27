@@ -31,7 +31,6 @@ export class TopBarPanelComponent implements OnInit, AfterContentChecked {
   }
 
   get getUserName() {
-    debugger;
     let userName = this.authService.getUserName();
     userName = userName ? userName.split('@')[0] : '';
 
@@ -61,6 +60,10 @@ export class TopBarPanelComponent implements OnInit, AfterContentChecked {
   logOutBtnClicked() {
     this.authService.logOut();
     this.router.navigateByUrl(''); 
+  }
+
+  redirectTo(url: string) {
+    this.router.navigateByUrl(url);
   }
 
   ngOnInit(): void {

@@ -1,9 +1,9 @@
-  .login {
+.login {
   max-width: 180px;
   padding: 0 140px;
   margin: 0 auto;
   padding-bottom: 90px;
-  padding-top: 40px;
+  padding-top: 50px;
 }
 
 .container {
@@ -11,4 +11,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+mat-card-actions {
+  text-align: right;
 }

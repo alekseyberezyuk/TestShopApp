@@ -1,12 +1,12 @@
 <div>
     <mat-drawer-container class="container main-container" hasBackdrop="false">
-        <mat-drawer #drawer mode="over" class="container filter-container" position="end">
-          <br><br>
-            {{ 'filters' | translate }}
+        <mat-drawer #drawer mode="over" [opened]="filterOpened" class="container filter-container" position="end">
+          <br><br>            
+            <shop-filter></shop-filter>
         </mat-drawer>
         <mat-drawer-content class="container items-page-container">
-          <button #toggleFiltersBtn mat-icon-button color="primary" class="show-filters-btn" (click)="toggleFilterBtnClicked()">
-              <mat-icon>{{!filterOpened ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon>
+          <button #toggleFiltersBtn mat-icon-button color="primary" [class]="!FilterOpened ? 'show-filter-btn' : 'hide-filter-btn'" (click)="toggleFilterBtnClicked()">
+            <mat-icon>{{!FilterOpened ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}</mat-icon>
           </button>
           <br><br>
           <h1>{{ 'items-to-buy' | translate }}</h1>
@@ -17,7 +17,7 @@
               <mat-card-subtitle>Small</mat-card-subtitle>
               <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" >
             </mat-card-title-group>
-            <mat-card-content>
+          <mat-card-content>
               text
             </mat-card-content>
           </mat-card>
