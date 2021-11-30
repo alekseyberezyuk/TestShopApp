@@ -5,5 +5,4 @@ export class Item {
     price!: number;
     categoryId!: number;
     categoryName!: string;
-
 }

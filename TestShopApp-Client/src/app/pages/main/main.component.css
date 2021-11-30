@@ -46,3 +46,8 @@ h1 {
     text-align: center;
     margin-left: auto;
 }
+
+mat-paginator {
+    /* position: absolute; */
+    width: 47%;
+}

@@ -11,35 +11,35 @@
         <span>Test Shop Application</span>
         <span class="example-spacer"></span>
         <div *ngIf="showMenu">
-        <span class="name">{{ getUserName }}</span>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button mat-icon-button >
-            <mat-icon>shopping_cart</mat-icon>
-        </button>
-        &nbsp;
-        <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu" [overlapTrigger]="false">
-            <span (mouseleave)="menuTrigger.closeMenu()">
-                <button mat-menu-item (click)="redirectTo('account')">
-                    <mat-icon>account_box</mat-icon>
-                    <span>{{ 'menu.account' | translate }}</span>
-                </button>
-                <button mat-menu-item (click)="redirectTo('main')">
-                    <mat-icon>shopping_basket</mat-icon>
-                    <span>{{ 'menu.store' | translate }}</span>
-                </button>
-                <button mat-menu-item (click)="redirectTo('orders')">
-                    <mat-icon>business_center</mat-icon>
-                    <span>{{ 'menu.orders' | translate }}</span>
-                </button>
-                <button mat-menu-item (click)="logOutBtnClicked()">
-                    <mat-icon>exit_to_app</mat-icon>
-                    <span>{{ 'menu.logout' | translate }}</span>
-                </button>
-            </span>
-        </mat-menu>
+            <span class="name">{{ getUserName }}</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-icon-button >
+                <mat-icon>shopping_cart</mat-icon>
+            </button>
+            &nbsp;
+            <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" [overlapTrigger]="false">
+                <span (mouseleave)="menuTrigger.closeMenu()">
+                    <button mat-menu-item (click)="redirectTo('account')">
+                        <mat-icon>account_box</mat-icon>
+                        <span>{{ 'menu.account' | translate }}</span>
+                    </button>
+                    <button mat-menu-item (click)="redirectTo('main')">
+                        <mat-icon>shopping_basket</mat-icon>
+                        <span>{{ 'menu.store' | translate }}</span>
+                    </button>
+                    <button mat-menu-item (click)="redirectTo('orders')">
+                        <mat-icon>business_center</mat-icon>
+                        <span>{{ 'menu.orders' | translate }}</span>
+                    </button>
+                    <button mat-menu-item (click)="logOutBtnClicked()">
+                        <mat-icon>exit_to_app</mat-icon>
+                        <span>{{ 'menu.logout' | translate }}</span>
+                    </button>
+                </span>
+            </mat-menu>
         </div>
     </mat-toolbar>
 </div>

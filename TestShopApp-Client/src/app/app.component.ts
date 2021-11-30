@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeAnimation } from './animations/fade.animation';
+import { AuthService } from './service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +17,13 @@ export class AppComponent {
     return this.showTopBar;
   }
 
-  constructor(translate: TranslateService, private router: Router) {    
+  constructor(translate: TranslateService, private authService: AuthService, private router: Router) {    
     router.events.subscribe(event => {
-      this.showTopBar = router.url !== '' && router.url !== '/login';
+      if (router.url !== '' && router.url !== 'login' && router.url !== '/login' && authService.isAuthenticated()) {
+        this.showTopBar = true;
+      } else {
+        this.showTopBar = false;
+      } 
     });
     translate.setDefaultLang('en-US');
   }

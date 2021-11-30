@@ -4,6 +4,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 import { ItemService } from 'src/app/service/index';
 import { environment } from "src/app/environments/environment";
+import { Item } from 'src/app/models/item';
 
 @Component({
   selector: 'app-main',
@@ -11,10 +12,11 @@ import { environment } from "src/app/environments/environment";
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
-  @ViewChild('drawer') drawer!:MatSlideToggle;
-  @ViewChild('toggleFiltersBtn') toggleFiltersBtn!:MatButton;
+  @ViewChild('drawer') drawer!: MatSlideToggle;
+  @ViewChild('toggleFiltersBtn') toggleFiltersBtn!: MatButton;
 
   filterOpened: boolean = environment.appSettings.filterOpenedByDefault;
+  items!: Item[];
 
   get FilterOpened() {
     return this.filterOpened;
@@ -42,7 +44,12 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.itemsService.get().subscribe(items => {
-      console.log(items);
+      this.items = [];
+
+      for (const data of items) {
+        const i: Item = data;
+        this.items.push(i);
+      }
     });
   }
 }

@@ -21,7 +21,6 @@ import { AuthService } from 'src/app/service';
   ]
 })
 export class TopBarPanelComponent implements OnInit, AfterContentChecked {
-  showLanguageSelect = false;
   language!: string;
 
   @Input() showMenu!: boolean;
@@ -35,26 +34,25 @@ export class TopBarPanelComponent implements OnInit, AfterContentChecked {
     userName = userName ? userName.split('@')[0] : '';
 
     if (userName.length > 0) {
-      userName = userName[0].toUpperCase() + userName.substr(1);
+      userName = userName[0].toUpperCase() + userName.substr(1).toLowerCase();
     }
     return userName;
   }
 
-  constructor(private translate: TranslateService, private router: Router, private ref: ChangeDetectorRef, public authService: AuthService) {
+  constructor(
+    public authService: AuthService,
+    private translateService: TranslateService,
+    private router: Router,
+    private ref: ChangeDetectorRef
+    ) {
   }
 
   languageChanged() {
-    this.showLanguageSelect = !this.showLanguageSelect;
-    console.log(this.language);
-    this.translate.setDefaultLang(this.language);
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        this.router.navigate([currentUrl]);
-    });
-  }
-
-  langBtnClicked() {
-    this.showLanguageSelect = !this.showLanguageSelect;
+    this.translateService.setDefaultLang(this.language);
+    // const currentUrl = this.router.url;
+    // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+    //     this.router.navigate([currentUrl]);
+    // });
   }
 
   logOutBtnClicked() {
@@ -67,7 +65,7 @@ export class TopBarPanelComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit(): void {
-    this.language = this.translate.getDefaultLang();
+    this.language = this.translateService.getDefaultLang();
   }
 
   ngAfterContentChecked() : void {
