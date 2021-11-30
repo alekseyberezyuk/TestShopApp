@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { AuthResponse } from 'src/app/models/authResponse';
 import { Credentials } from 'src/app/models/credentials';
 import { AuthService } from 'src/app/service/auth.service';
+import { FormControl, Validators, } from "@angular/forms";
 
 @Component({
   selector: 'app-login',
@@ -15,31 +16,40 @@ import { AuthService } from 'src/app/service/auth.service';
 export class LoginComponent implements OnInit {
   // TODO: later remove hardcoded credentials
   public creds: Credentials = new Credentials('user@testshopapp.com', 'User12#');
- 
-  constructor(private toastr: ToastrService, private authService: AuthService, private translateService: TranslateService, private router: Router) {
+  public username!: FormControl;
+  public password!: FormControl;
+
+  constructor(private toastr: ToastrService,
+    private authService: AuthService,
+    private translateService: TranslateService,
+    private router: Router, 
+  ) {
   }
   
+  
   btnClicked() {
-    this.authService.authenticate(this.creds).subscribe({
-      next: async data => {
-        const authResponse: AuthResponse = data;
-        
-        if(authResponse.isSuccess) {
-          this.toastr.clear();
-          this.router.navigateByUrl('main');
-
-        } else {
-          const errorMsg = await firstValueFrom(this.translateService.get('auth-fail'));
-          this.toastr.warning(errorMsg);
-        }
-      },
-      error: (error) => console.error(error)
-    });
+    if (this.username.valid && this.password.valid) {
+      this.authService.authenticate(this.creds).subscribe({
+        next: async data => {
+          const authResponse: AuthResponse = data;
+          if(authResponse.isSuccess) {
+            this.toastr.clear();
+            this.router.navigateByUrl('main');
+          } else {
+            const errorMsg = await firstValueFrom(this.translateService.get('auth-fail'));
+            this.toastr.warning(errorMsg);
+          }
+        },
+        error: (error) => console.error(error)
+      });
+    }
   }
   
   ngOnInit(): void {
     if(this.authService.isAuthenticated()) {
       this.router.navigateByUrl('main'); 
     }
+    this.username =  new FormControl('', [Validators.required, Validators.email]);
+    this.password = new FormControl('', Validators.required);
   }
 }

@@ -16,7 +16,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './angular-material/angular-material.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule,} from '@angular/forms';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { TopBarPanelComponent } from './components/top-bar-panel/top-bar-panel.component';
 import { FilterComponent } from './components/filter/filter.component';
@@ -39,6 +39,7 @@ import { AccountComponent } from './pages/account/account.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     TranslateModule.forRoot({
         loader: {
             provide: TranslateLoader,
