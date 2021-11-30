@@ -6,6 +6,7 @@
     min-height: 700px;
 }
 
-mat-slider {
-    width: 300px;
+mat-card-content button {
+    width: 86%;
+    height: 3.6em;
 }

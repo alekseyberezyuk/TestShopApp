@@ -5,25 +5,33 @@
           <br><br><br>
           <mat-form-field appearance="outline">
             <mat-label>{{ 'filter.category' | translate }}</mat-label>
-            <mat-select>
-                <mat-option *ngFor="let c of categories" [value]="c">{{c}}</mat-option>
+            <mat-select
+             [disabled]="!categoryKeys || categoryKeys.length == 0"
+             value="all"
+             [(ngModel)]="filter.categoryId"
+             (selectionChange)="filterValueChanged()">
+                <mat-option value="all">All</mat-option>
+                <mat-option *ngFor="let id of categoryKeys" [value]="id">{{categories[id]}}</mat-option>
             </mat-select>
           </mat-form-field>
           <br>
           <mat-form-field appearance="outline">
             <mat-label>{{ 'filter.from-price' | translate }}</mat-label>
-            <input matInput type="number">
+            <input matInput type="number" [(ngModel)]="filter.fromPrice" (change)="filterValueChanged()">
           </mat-form-field>
           <br>
           <mat-form-field appearance="outline">
             <mat-label>{{ 'filter.to-price' | translate }}</mat-label>
-            <input matInput type="number">
+            <input matInput type="number" [(ngModel)]="filter.toPrice" (change)="filterValueChanged()">
           </mat-form-field>
           <br>
           <mat-form-field appearance="outline">
             <mat-label>{{ 'search' | translate }}</mat-label>
-            <input matInput type="text">
+            <input matInput type="text" [(ngModel)]="filter.searchParam" (keyup)="filterValueChanged(true)">
           </mat-form-field>
-        </mat-card-content>        
+          <button mat-stroked-button color="primary" (click)="clear()">
+            <mat-label>Clear</mat-label>
+          </button>
+        </mat-card-content>
       </mat-card>
 </div>

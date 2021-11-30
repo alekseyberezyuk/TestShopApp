@@ -1,9 +1,10 @@
 using System;
-using TestShopApplication.Api.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TestShopApplication.Dal.Common;
 using TestShopApplication.Dal.Repositories;
+using TestShopApplication.Api.Models;
 
 namespace TestShopApplication.Api.Services
 {
@@ -15,19 +16,21 @@ namespace TestShopApplication.Api.Services
             _itemsRepository = itemsRepository;
         }
         
-        public async Task<IEnumerable<Item>> GetAll(FilterParameters filterParameters)
+        public async Task<IEnumerable<ItemResponsePresentation>> GetAll(FilterParameters filterParameters)
         {
-            return await _itemsRepository.GetAll(filterParameters);
+            IEnumerable<Item> items = await _itemsRepository.GetAll(filterParameters);
+            return items.Select(i => new ItemResponsePresentation(i));
         }
         
-        public async Task<Item> GetById(Guid itemId)
+        public async Task<ItemResponsePresentation> GetById(Guid itemId)
         {
-            return await _itemsRepository.GetById(itemId);
+            return new ItemResponsePresentation(await _itemsRepository.GetById(itemId));
         }
         
-        public async Task<Response<Guid>> Create(ItemModel item)
+        public async Task<Response<Guid>> Create(ItemPresentation item)
         {
             if (await Exists(item.Name))
+            {
                 return new Response<Guid>
                 {
                     Success = false,
@@ -36,7 +39,7 @@ namespace TestShopApplication.Api.Services
                         $"Failed to create. Item with name {item.Name} already exists."
                     }
                 };
-
+            }
             var addResult = await _itemsRepository.TryAdd(new ItemWithCategory
             {
                 ItemId = Guid.NewGuid(),
@@ -45,7 +48,6 @@ namespace TestShopApplication.Api.Services
                 Price = item.Price,
                 CategoryId = item.CategoryId
             });
-
             return new Response<Guid>
             {
                 Result = addResult,
@@ -53,9 +55,10 @@ namespace TestShopApplication.Api.Services
             };
         }
         
-        public async Task<Response<bool>> Update(Guid itemId, ItemModel item)
+        public async Task<Response<bool>> Update(Guid itemId, ItemPresentation item)
         {
             if (await Exists(item.Name))
+            {
                 return new Response<bool>
                 {
                     Success = false,
@@ -64,7 +67,7 @@ namespace TestShopApplication.Api.Services
                         $"Unable to update.Item with name {item.Name} already exists."
                     }
                 };
-            
+            }
             var updateResult =  await _itemsRepository.TryUpdate(new ItemWithCategory
             {
                 ItemId = itemId,
@@ -73,7 +76,6 @@ namespace TestShopApplication.Api.Services
                 Price = item.Price,
                 CategoryId = item.CategoryId
             });
-
             return new Response<bool>
             {
                 Success = updateResult
@@ -87,10 +89,7 @@ namespace TestShopApplication.Api.Services
 
         private async Task<bool> Exists(string name)
         {
-            if (await _itemsRepository.Exists(name))
-                return true;
-
-            return false;
+            return await _itemsRepository.Exists(name);
         }
     }
 }

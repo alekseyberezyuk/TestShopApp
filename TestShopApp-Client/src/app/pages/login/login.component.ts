@@ -16,8 +16,8 @@ import { FormControl, Validators, } from "@angular/forms";
 export class LoginComponent implements OnInit {
   // TODO: later remove hardcoded credentials
   public creds: Credentials = new Credentials('user@testshopapp.com', 'User12#');
-  public username!: FormControl;
-  public password!: FormControl;
+  public usernameFormControl!: FormControl;
+  public passwordFormControl!: FormControl;
 
   constructor(private toastr: ToastrService,
     private authService: AuthService,
@@ -28,7 +28,9 @@ export class LoginComponent implements OnInit {
   
   
   btnClicked() {
-    if (this.username.valid && this.password.valid) {
+    if (this.usernameFormControl.valid && this.passwordFormControl.valid) {
+      this.creds.username = this.usernameFormControl.value;
+      this.creds.password = this.passwordFormControl.value;
       this.authService.authenticate(this.creds).subscribe({
         next: async data => {
           const authResponse: AuthResponse = data;
@@ -49,7 +51,7 @@ export class LoginComponent implements OnInit {
     if(this.authService.isAuthenticated()) {
       this.router.navigateByUrl('main'); 
     }
-    this.username =  new FormControl('', [Validators.required, Validators.email]);
-    this.password = new FormControl('', Validators.required);
+    this.usernameFormControl =  new FormControl(this.creds.username, [Validators.required, Validators.email]);
+    this.passwordFormControl = new FormControl(this.creds.password, Validators.required);
   }
 }

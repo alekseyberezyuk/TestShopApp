@@ -2,7 +2,7 @@ using System;
 
 namespace TestShopApplication.Api.Models
 {
-    public class OrderItem
+    public sealed class OrderItemPresentation
     {
         public Guid ItemId { get; set; }
         public string Name { get; set; }

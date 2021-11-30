@@ -28,7 +28,7 @@ namespace TestShopApplication.Api.Services
             Issuer ??= configuration["JWT:ValidIssuer"];
         }
 
-        public async Task<(bool userExists, string token)> Authenticate(LoginData loginData)
+        public async Task<(bool userExists, string token)> Authenticate(LoginDataPresentation loginData)
         {
             try
             {

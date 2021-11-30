@@ -1,6 +1,6 @@
 ﻿namespace TestShopApplication.Api.Models
 {
-    public class AuthResponse
+    public sealed class AuthResponsePresentation
     {
         public bool IsSuccess { get; set; }
         public string Token { get; set; }

@@ -27,7 +27,7 @@ namespace TestShopApplication.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder(IEnumerable<OrderItem> orderItems)
+        public async Task<IActionResult> CreateOrder(IEnumerable<OrderItemPresentation> orderItems)
         {
             var userId = GetUserId();
             return Ok(await _ordersService.CreateOrder(userId, orderItems));

@@ -24,10 +24,10 @@ namespace TestShopApplication.Api.Services
             return await _ordersRepository.GetAll(userId);
         }
         
-        public async Task<IEnumerable<OrderItem>> GetAllItems(Guid orderId)
+        public async Task<IEnumerable<OrderItemPresentation>> GetAllItems(Guid orderId)
         {
             var items = await _orderRepository.GetAll(orderId);
-            return items.Select(i => new OrderItem
+            return items.Select(i => new OrderItemPresentation
             {
                 ItemId = i.ItemId,
                 Name = i.Description,
@@ -36,7 +36,7 @@ namespace TestShopApplication.Api.Services
             });
         }
 
-        public async Task<Guid> CreateOrder(Guid userId, IEnumerable<OrderItem> items)
+        public async Task<Guid> CreateOrder(Guid userId, IEnumerable<OrderItemPresentation> items)
         {
             var order = new Order
             {

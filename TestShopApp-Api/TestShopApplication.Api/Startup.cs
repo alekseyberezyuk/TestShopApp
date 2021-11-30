@@ -68,6 +68,9 @@ namespace TestShopApplication.Api
                     Title = "TestShopApp web api",
                     Description = "A test api for angular client application"
                 });
+                var xmlFilename = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                swagger.IncludeXmlComments(System.IO.Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
                 // To Enable authorization using Swagger (JWT)    
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {

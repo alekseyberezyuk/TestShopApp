@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ItemService } from 'src/app/service/index';
 import { environment } from "src/app/environments/environment";
 import { Item } from 'src/app/models/item';
+import { FilterParameters } from 'src/app/models/filterParameters';
 
 @Component({
   selector: 'app-main',
@@ -17,6 +18,7 @@ export class MainComponent implements OnInit {
 
   filterOpened: boolean = environment.appSettings.filterOpenedByDefault;
   items!: Item[];
+  categories!: {};
 
   get FilterOpened() {
     return this.filterOpened;
@@ -42,13 +44,20 @@ export class MainComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.itemsService.get().subscribe(items => {
-      this.items = [];
+  filterParametersChanged(filterParameters: FilterParameters) {
+    // Remove later when no longer required
+    console.log(filterParameters);
 
-      for (const data of items) {
-        const i: Item = data;
-        this.items.push(i);
+    // Add here new code that uses the new method 'getFiltered' in itemsService and send filterParameters to the server    
+  }
+
+  ngOnInit(): void {
+    this.itemsService.getAll().subscribe(itemsFromApi => {
+      this.items = itemsFromApi;
+      this.categories = {};
+
+      for (const i of itemsFromApi) {
+        this.categories[i.categoryId] = i.categoryName;
       }
     });
   }

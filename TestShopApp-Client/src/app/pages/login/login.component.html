@@ -7,26 +7,27 @@
         <br>
         <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>{{ 'username' | translate }}</mat-label>
-             <input type="email" matInput [formControl]="username" [(ngModel)]="creds.username">
-             <mat-error *ngIf="username.hasError('email') && !username.hasError('required')">
+             <input type="email" matInput [formControl]="usernameFormControl">
+             <mat-error *ngIf="usernameFormControl.hasError('email') && !usernameFormControl.hasError('required')">
                 Please enter a valid email address
             </mat-error>
-            <mat-error *ngIf="username.hasError('required')">
+            <mat-error *ngIf="usernameFormControl.hasError('required')">
                 Email is <strong>required</strong>
             </mat-error>
         </mat-form-field>
 
         <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>{{ 'enter-pass' | translate }}</mat-label>
-            <input type="password" matInput [formControl]="password" [(ngModel)]="creds.password">
-            <mat-error *ngIf="password.hasError('password') && !password.hasError('required')">
+            <input type="password" matInput [formControl]="passwordFormControl">
+            <mat-error *ngIf="passwordFormControl.hasError('password') && !passwordFormControl.hasError('required')">
                 Please enter a valid password
             </mat-error>
-            <mat-error *ngIf="password.hasError('required')">
+            <mat-error *ngIf="passwordFormControl.hasError('required')">
                 Password is <strong>required</strong>
             </mat-error>
         </mat-form-field>
         <mat-card-actions>
+            <br>
             <button mat-raised-button color="primary" (click)="btnClicked()">{{ 'send' | translate }}</button>
         </mat-card-actions>
     </mat-card-content>

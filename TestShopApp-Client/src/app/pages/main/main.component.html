@@ -2,7 +2,7 @@
     <mat-drawer-container class="container main-container" hasBackdrop="false">
         <mat-drawer #drawer mode="over" [opened]="filterOpened" class="container filter-container" position="end">
           <br><br>            
-            <shop-filter></shop-filter>
+          <shop-filter [categories]="categories" (filterParametersChange)="filterParametersChanged($event)"></shop-filter>
         </mat-drawer>
         <mat-drawer-content class="container items-page-container">
           <button #toggleFiltersBtn mat-icon-button color="primary" [class]="!FilterOpened ? 'show-filter-btn' : 'hide-filter-btn'" (click)="toggleFilterBtnClicked()">
@@ -23,7 +23,7 @@
             </mat-card-content>
           </mat-card>        
           <mat-paginator
-           [length]="items.length"
+           [length]="items?.length || 0"
            [pageSize]="3">
           </mat-paginator>
         </mat-drawer-content>

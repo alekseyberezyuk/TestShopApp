@@ -21,9 +21,9 @@ import { AuthService } from 'src/app/service';
   ]
 })
 export class TopBarPanelComponent implements OnInit, AfterContentChecked {
-  language!: string;
-
   @Input() showMenu!: boolean;
+  
+  language!: string;
 
   get languageLabel() {
     return this.language.split('-')[0].toUpperCase();

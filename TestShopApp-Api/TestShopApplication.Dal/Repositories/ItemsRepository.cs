@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dapper;
 using Microsoft.Data.SqlClient;
+using Dapper;
 using TestShopApplication.Dal.Common;
 
 namespace TestShopApplication.Dal.Repositories
@@ -30,32 +29,20 @@ namespace TestShopApplication.Dal.Repositories
 
             if (withFilter)
             {
-                bool parameterAdded = false;
-
                 if (filterParameters.MinPrice > 0)
                 {
-                    sb.Append(" AND [items].price > @minPrice ");
+                    sb.Append(" AND [items].price >= @minPrice ");
                     parameters.Add("minPrice", filterParameters.MinPrice);
-                    parameterAdded = true;
                 }
                 if (filterParameters.MaxPrice != null)
                 {
-                    if (parameterAdded)
-                    {
-                        sb.Append("AND ");
-                    }
-                    sb.Append($"[items].price < @maxPrice ");
+                    sb.Append($" AND [items].price <= @maxPrice ");
                     parameters.Add("maxPrice", filterParameters.MaxPrice);
-                    parameterAdded = true;
                 }
 
                 if (withCategories)
                 {
-                    if (parameterAdded)
-                    {
-                        sb.Append("AND ");
-                    }
-                    sb.Append("[items].category_id IN (");
+                    sb.Append(" AND [items].category_id IN (");
 
                     for (var i = 1; i <= filterParameters.CategoryIds.Count; i++)
                     {
@@ -66,7 +53,6 @@ namespace TestShopApplication.Dal.Repositories
                     sb.Append(") ");
                 }
             }
-            
             var query = sb.ToString().TrimEnd(',', ' ');
             using var connection = new SqlConnection(ConnectionString);
             var results = await connection.QueryAsync<Item>(query, parameters);
@@ -120,10 +106,10 @@ namespace TestShopApplication.Dal.Repositories
         public async ValueTask<bool> TryDelete(Guid itemId)
         {
             var request = $"UPDATE [items]" +
-                          $"SET is_deleted=1"+
+                          $"SET is_deleted=1" +
                           $"WHERE item_id=@itemId";
             using var connection = new SqlConnection(ConnectionString);
-            var result = await connection.ExecuteAsync(request, new {itemId});
+            var result = await connection.ExecuteAsync(request, new { itemId });
             return result >= 0;
         }
 
