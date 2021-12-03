@@ -1,6 +1,6 @@
 using System.Reflection.Metadata;
 
-namespace TestShopApplication.Dal.Common
+namespace TestShopApplication.Dal.Models
 {
     public class ShoppingCartContentItem : ShoppingCartItem
     {

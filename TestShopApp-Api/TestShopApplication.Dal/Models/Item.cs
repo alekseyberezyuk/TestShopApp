@@ -1,6 +1,6 @@
 using System;
 
-namespace TestShopApplication.Dal.Common
+namespace TestShopApplication.Dal.Models
 {
     public class Item
     {

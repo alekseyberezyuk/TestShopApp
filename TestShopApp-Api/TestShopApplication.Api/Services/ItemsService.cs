@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestShopApplication.Dal.Common;
+using TestShopApplication.Dal.Models;
 using TestShopApplication.Dal.Repositories;
 using TestShopApplication.Api.Models;
 
@@ -10,8 +10,8 @@ namespace TestShopApplication.Api.Services
 {
     public class ItemsService
     {
-        private readonly IItemsRepository _itemsRepository;
-        public ItemsService(IItemsRepository itemsRepository)
+        private readonly IItemRepository _itemsRepository;
+        public ItemsService(IItemRepository itemsRepository)
         {
             _itemsRepository = itemsRepository;
         }
@@ -40,7 +40,7 @@ namespace TestShopApplication.Api.Services
                     }
                 };
             }
-            var addResult = await _itemsRepository.TryAdd(new ItemWithCategory
+            var addResult = await _itemsRepository.TryAdd(new Item
             {
                 ItemId = Guid.NewGuid(),
                 Name = item.Name,
@@ -68,7 +68,7 @@ namespace TestShopApplication.Api.Services
                     }
                 };
             }
-            var updateResult =  await _itemsRepository.TryUpdate(new ItemWithCategory
+            var updateResult =  await _itemsRepository.TryUpdate(new Item
             {
                 ItemId = itemId,
                 Name = item.Name,

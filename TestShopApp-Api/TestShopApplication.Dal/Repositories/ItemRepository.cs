@@ -4,15 +4,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Dapper;
-using TestShopApplication.Dal.Common;
+using TestShopApplication.Dal.Models;
 
 namespace TestShopApplication.Dal.Repositories
 {
-    public class ItemsRepository : IItemsRepository
+    public class ItemRepository : IItemRepository
     {
         private string ConnectionString { get; }
 
-        public ItemsRepository(string connectionString)
+        public ItemRepository(string connectionString)
         {
             ConnectionString = connectionString;
         }
@@ -69,7 +69,7 @@ namespace TestShopApplication.Dal.Repositories
             return result;
         }
 
-        public async ValueTask<Guid> TryAdd(ItemWithCategory item)
+        public async ValueTask<Guid> TryAdd(Item item)
         {
             var request = $"INSERT INTO [items] (item_id, name, description, price, category_id, is_deleted)" +
                           $"VALUES(@itemId, @name, @description, @price, @categoryId, 0)";
@@ -85,7 +85,7 @@ namespace TestShopApplication.Dal.Repositories
             return result > 0 ? item.ItemId : Guid.Empty;
         }
 
-        public async ValueTask<bool> TryUpdate(ItemWithCategory item)
+        public async ValueTask<bool> TryUpdate(Item item)
         {
             var request = $"UPDATE [items] " +
                           $"SET name=@name, description=@description, " +

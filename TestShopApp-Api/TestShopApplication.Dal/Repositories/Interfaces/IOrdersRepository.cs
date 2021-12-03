@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TestShopApplication.Dal.Common;
+using TestShopApplication.Dal.Models;
 
 namespace TestShopApplication.Dal.Repositories
 {

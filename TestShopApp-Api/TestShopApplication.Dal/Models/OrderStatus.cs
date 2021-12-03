@@ -1,4 +1,4 @@
-namespace TestShopApplication.Dal.Common
+namespace TestShopApplication.Dal.Models
 {
     public enum OrderStatus
     {

@@ -4,12 +4,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using TestShopApplication.Dal.Common;
+using TestShopApplication.Dal.Models;
 using TestShopApplication.Dal.Repositories;
 using TestShopApplication.Api.Models;
-using System.Threading.Tasks;
 
 namespace TestShopApplication.Api.Services
 {

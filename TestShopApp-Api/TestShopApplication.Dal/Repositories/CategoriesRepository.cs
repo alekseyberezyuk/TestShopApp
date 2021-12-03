@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Dapper;
@@ -6,11 +7,11 @@ using TestShopApplication.Dal.Models;
 
 namespace TestShopApplication.Dal.Repositories
 {
-    public sealed class AuthRepository : IAuthRepository
+    public sealed class CategoryRepository : ICategoryRepository
     {
         private string ConnectionString { get; }
 
-        public AuthRepository(string connectionString)
+        public CategoryRepository(string connectionString)
         {
             ConnectionString = connectionString;
         }
@@ -25,6 +26,17 @@ namespace TestShopApplication.Dal.Repositories
             connection.Open();
             var dbEntry = await connection.QuerySingleAsync<UserSecurityDetails>(query, new { username });
             dbEntry.UserName = username;
+            return dbEntry;
+        }
+
+        public IEnumerable<Category> GetCategories()
+        {
+            var query = @"SELECT distinct c.[category_id] AS Id, [category_name] AS Name FROM item_categories AS c
+                          INNER JOIN items AS i
+                          ON i.category_id=c.category_id";
+            using var connection = new SqlConnection(ConnectionString);
+            connection.Open();
+            var dbEntry = connection.Query<Category>(query);
             return dbEntry;
         }
     }

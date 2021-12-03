@@ -1,5 +1,5 @@
 using System;
-using TestShopApplication.Dal.Common;
+using TestShopApplication.Dal.Models;
 
 namespace TestShopApplication.Api.Models
 {

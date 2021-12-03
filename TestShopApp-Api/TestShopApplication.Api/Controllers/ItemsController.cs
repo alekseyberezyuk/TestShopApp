@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TestShopApplication.Dal.Models;
 using TestShopApplication.Api.Models;
 using TestShopApplication.Api.Services;
-using TestShopApplication.Dal.Common;
 
 namespace TestShopApplication.Api.Controllers
 {

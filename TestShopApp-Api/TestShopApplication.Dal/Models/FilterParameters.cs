@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TestShopApplication.Dal.Common
+namespace TestShopApplication.Dal.Models
 {
     public readonly struct FilterParameters
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Data.SqlClient;
-using TestShopApplication.Dal.Common;
+using TestShopApplication.Dal.Models;
 
 namespace TestShopApplication.Dal.Repositories
 {

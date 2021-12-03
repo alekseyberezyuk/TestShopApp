@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TestShopApplication.Api.Models;
-using TestShopApplication.Dal.Common;
+using TestShopApplication.Dal.Models;
 using TestShopApplication.Dal.Repositories;
 
 namespace TestShopApplication.Api.Services
@@ -24,16 +24,10 @@ namespace TestShopApplication.Api.Services
         {
             item.CreatedAt = DateTime.UtcNow;
             var id = await _userCartRepository.AddItemToCart(item);
-            if (id == Guid.Empty)
-                return new Response<Guid>
-                {
-                    Success = false
-                };
-            
             return new Response<Guid>
             {
-                Result = id,
-                Success = true
+                Success = id != Guid.Empty,
+                Result = id
             };
         }
 
