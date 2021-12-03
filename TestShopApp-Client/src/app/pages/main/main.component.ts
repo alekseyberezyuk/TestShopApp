@@ -47,8 +47,9 @@ export class MainComponent implements OnInit {
   filterParametersChanged(filterParameters: FilterParameters) {
     // Remove later when no longer required
     console.log(filterParameters);
-
-    // Add here new code that uses the new method 'getFiltered' in itemsService and send filterParameters to the server    
+    this.itemsService.getFiltered(filterParameters).subscribe(itemsFromApi => {
+      this.items = itemsFromApi; 
+    });
   }
 
   ngOnInit(): void {

@@ -14,8 +14,19 @@ export class ItemService {
   getAll(): Observable<Item[]> {
     return this.http.get<Item[]>(environment.baseUrl + '/items');
   }
-
-  // Add here a new method named 'getFiltered' or sth like that, it should accept a parameter of type ':FilterParameters'
-  // Check swagger to see how does the 'GET /items' api work with query parameters ?xxx&yyy
-  // When you understand how it works add a get request to the api in your new 'getFiltered' method and use parameters this time
+  
+  getFiltered(filterParameters: FilterParameters) {
+    let url = environment.baseUrl + '/items?';
+    url += `minPrice=${filterParameters.fromPrice || 0}`;
+    if (filterParameters.toPrice) {
+      url += `&maxPrice=${filterParameters.toPrice}`;
+    }
+    if(filterParameters.categoryId && filterParameters.categoryId != 'all') {
+      url += `&categories=${filterParameters.categoryId}`;
+    } 
+    if(filterParameters.searchParam) {
+      url += `&searchParam=${filterParameters.searchParam}`;
+    } 
+    return this.http.get<Item[]>(url);  
+  }
 } 

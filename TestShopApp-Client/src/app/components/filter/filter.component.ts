@@ -39,7 +39,7 @@ export class FilterComponent implements OnInit {
     if (this.paramsChanged) {
       this.filter = new FilterParameters();      
       this.paramsChanged = false;
-      this.filterValueChanged();
+      this.filterParametersChange.emit(this.filter);
     }
   }
 
