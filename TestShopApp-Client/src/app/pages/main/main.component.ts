@@ -4,8 +4,10 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 import { ItemService } from 'src/app/services/index';
 import { environment } from "src/app/environments/environment";
-import { Item } from 'src/app/models/index';
+import { Item, OrderBy } from 'src/app/models/index';
 import { FilterParameters } from 'src/app/models/filterParameters';
+import { TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -19,12 +21,18 @@ export class MainComponent implements OnInit {
   filterOpened: boolean = environment.appSettings.filterOpenedByDefault;
   items!: Item[];
   categories!: {};
+  filterParameters: FilterParameters = new FilterParameters();
+  orderByTranslations!: {};
 
   get FilterOpened() {
     return this.filterOpened;
   }
 
-  constructor(private itemsService: ItemService, private router: Router) {
+  get KeysForOrderBy() {
+    return Object.keys(OrderBy);
+  }
+
+  constructor(private itemsService: ItemService, private translateService: TranslateService, private router: Router) {
   }
 
   toggleFilterBtnClicked() {
@@ -45,9 +53,14 @@ export class MainComponent implements OnInit {
   }
 
   filterParametersChanged(filterParameters: FilterParameters) {
+    filterParameters.orderBy = this.filterParameters.orderBy;
+    this.filterParameters = filterParameters;
     this.itemsService.get(filterParameters).subscribe(itemsFromApi => {
       this.items = itemsFromApi; 
     });
+  }
+
+  orderByChanged() {
   }
 
   ngOnInit(): void {
@@ -57,8 +70,14 @@ export class MainComponent implements OnInit {
         this.categories[c.id] = c.name;
       }
     });
-    this.itemsService.get(new FilterParameters()).subscribe(itemsFromApi => {
+    this.itemsService.get(this.filterParameters).subscribe(itemsFromApi => {
       this.items = itemsFromApi;
     });
+    this.orderByTranslations = {};
+    for (const key of Object.keys(OrderBy)) {
+      firstValueFrom(this.translateService.get(`sorting-options.${key}`)).then(t => {
+        this.orderByTranslations[key] = t;
+      });
+    }
   }
 }

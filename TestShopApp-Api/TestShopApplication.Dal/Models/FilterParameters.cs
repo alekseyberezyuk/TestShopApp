@@ -9,13 +9,15 @@ namespace TestShopApplication.Dal.Models
         public decimal? MaxPrice { get; init; }
         public IList<string> CategoryIds { get; init; }
         public OrderBy? OrderBy { get; init; }
+        public bool IncludeThumbnails { get; init; }
 
-        public FilterParameters(decimal minPrice, decimal? maxPrice, IList<string> categoryList, OrderBy? orderBy)
+        public FilterParameters(decimal minPrice, decimal? maxPrice, IList<string> categoryList, OrderBy? orderBy, bool? includeThumbnails)
         {
             MinPrice = minPrice;
             MaxPrice = maxPrice;
             CategoryIds = categoryList;
             OrderBy = orderBy;
+            IncludeThumbnails = includeThumbnails != false;
         }
     }
 }

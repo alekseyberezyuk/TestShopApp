@@ -21,7 +21,8 @@ namespace TestShopApplication.Dal.Repositories
         {
             var withCategories = filterParameters.CategoryIds?.Count > 0;
             var withFilter = filterParameters.MinPrice > 0 || filterParameters.MaxPrice != null || withCategories;
-            var sb = new StringBuilder($@"SELECT item_id, name, description, price, i.category_id, ic.category_name, created_timestamp, thumbnail as ThumbnailBase64 FROM [items] i
+            var thumbnailsSection = filterParameters.IncludeThumbnails ? ", thumbnail as ThumbnailBase64" : "";
+            var sb = new StringBuilder($@"SELECT item_id, name, description, price, i.category_id, ic.category_name, created_timestamp as CreatedTimeStamp{thumbnailsSection} FROM [items] i
                                           LEFT JOIN [item_categories] ic
                                             ON i.category_id=ic.category_id 
                                             WHERE is_deleted=0");
@@ -51,34 +52,6 @@ namespace TestShopApplication.Dal.Repositories
                         parameters.Add($"categoryId{i}", filterParameters.CategoryIds[i - 1]);
                     }
                     sb.Append(") ");
-                }
-                switch (filterParameters.OrderBy)
-                {
-                    case OrderBy.CategoryId:
-                        sb.Append("ORDER BY i.category_id");
-                        break;
-                    case OrderBy.CategoryName:
-                        sb.Append("ORDER BY i.category_name");
-                        break;
-                    case OrderBy.PriceAsc:
-                        sb.Append("ORDER BY i.price");
-                        break;
-                    case OrderBy.PriceDesc:
-                        sb.Append("ORDER BY i.price DESC");
-                        break;
-                    case OrderBy.CreatedDate:
-                        sb.Append("ORDER BY i.created_timestamp");
-                        break;
-                    case OrderBy.NameAsc:
-                        sb.Append("ORDER BY i.name");
-                        break;
-                    case OrderBy.NameDesc:
-                        sb.Append("ORDER BY i.name DESC");
-                        break;
-                    case OrderBy.CreatedDateDesc:
-                    default:
-                        sb.Append("ORDER BY i.created_timestamp DESC");
-                        break;
                 }
             }
             var query = sb.ToString().TrimEnd(',', ' ');

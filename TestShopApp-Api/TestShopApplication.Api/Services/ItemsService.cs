@@ -19,6 +19,35 @@ namespace TestShopApplication.Api.Services
         public async Task<IEnumerable<ItemResponsePresentation>> GetAll(FilterParameters filterParameters)
         {
             IEnumerable<Item> items = await _itemsRepository.GetAll(filterParameters);
+
+            switch (filterParameters.OrderBy)
+            {
+                case OrderBy.CategoryId:
+                    items = items.OrderBy(i => i.CategoryId);
+                    break;
+                case OrderBy.CategoryName:
+                    items = items.OrderBy(i => i.CategoryName);
+                    break;
+                case OrderBy.PriceAsc:
+                    items = items.OrderBy(i => i.Price);
+                    break;
+                case OrderBy.PriceDesc:
+                    items = items.OrderByDescending(i => i.Price);
+                    break;
+                case OrderBy.CreatedDate:
+                    items = items.OrderBy(i => i.CreatedTimeStamp);
+                    break;
+                case OrderBy.NameAsc:
+                    items = items.OrderBy(i => i.Name);
+                    break;
+                case OrderBy.NameDesc:
+                    items = items.OrderByDescending(i => i.Name);
+                    break;
+                case OrderBy.CreatedDateDesc:
+                default:
+                    items = items.OrderByDescending(i => i.CreatedTimeStamp);
+                    break;
+            }
             return items.Select(i => new ItemResponsePresentation(i));
         }
         

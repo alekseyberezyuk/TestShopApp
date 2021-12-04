@@ -29,13 +29,6 @@ namespace TestShopApplication.Api
         {
             DapperConfig.ConfigureDapper();
             services.AddDependencies(Configuration);
-
-            services.AddMvc().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                options.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy(), false));
-            });
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]));
 
             // Adding Authentication  
@@ -72,7 +65,7 @@ namespace TestShopApplication.Api
                 swagger.IncludeXmlComments(System.IO.Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
                 // To Enable authorization using Swagger (JWT)    
-                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
@@ -95,6 +88,13 @@ namespace TestShopApplication.Api
                         Array.Empty<string>()
                     }
                 });
+            });
+            services.AddSwaggerGenNewtonsoftSupport();
+            services.AddMvc().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy(), true));
             });
         }
 

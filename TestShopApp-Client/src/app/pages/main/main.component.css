@@ -56,3 +56,11 @@ mat-paginator {
     width: 4em;
     height: 4em;
 }
+
+.sort-panel {
+    display: block;
+    position: relative;
+    top: 1em;
+    left: 10em;
+    width: 80%;
+}

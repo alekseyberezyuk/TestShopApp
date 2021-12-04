@@ -36,8 +36,7 @@ namespace TestShopApplication.Api.Controllers
         [HttpGet]
         [Authorize(Roles = "User")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll(
             [FromQuery] decimal minPrice = 0,
             [FromQuery] decimal? maxPrice = null,
@@ -45,19 +44,20 @@ namespace TestShopApplication.Api.Controllers
             [FromQuery] string searchParam = null,
             [FromQuery] int? pageNumber = null,
             [FromQuery] int? itemsPerPage = null,
-            [FromQuery] OrderBy? orderBy = null)
+            [FromQuery] OrderBy? orderBy = null,
+            [FromQuery] bool? includeThumbnails = true)
         {
             if (minPrice < 0 || maxPrice <= 0 || minPrice >= maxPrice || !ValidateCategories(categories))
             {
-                return BadRequest();
+                return BadRequest(false);
             }
             var categoryList = ParseCategories(categories);
 
             if (categoryList == null || (searchParam != null && string.IsNullOrWhiteSpace(searchParam)))
             {
-                return BadRequest();
+                return BadRequest(false);
             }
-            var filterParameters = new FilterParameters(minPrice, maxPrice, categoryList, orderBy);
+            var filterParameters = new FilterParameters(minPrice, maxPrice, categoryList, orderBy, includeThumbnails);
             var items = await _itemsService.GetAll(filterParameters);
 
             if (searchParam != null)
@@ -84,7 +84,6 @@ namespace TestShopApplication.Api.Controllers
         [Authorize(Roles = "User")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get([FromRoute] Guid itemId)
         {
             if (itemId == Guid.Empty)
@@ -103,7 +102,6 @@ namespace TestShopApplication.Api.Controllers
         [Authorize(Roles = "Admin")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddItem([FromBody]ItemPresentation item)
         {
             var result = await _itemsService.Create(item);
@@ -124,7 +122,6 @@ namespace TestShopApplication.Api.Controllers
         [HttpPut("{itemId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateItem([FromRoute(Name = "itemId")]Guid itemId, [FromBody]ItemPresentation item)
         {
             var result = await _itemsService.Update(itemId, item);

@@ -25,5 +25,17 @@
 	},
 	"whoops": "Whoops!",
 	"go-back": "Go back",
-	"error-404-msg": "You tried to reach a page that does not exist"
+	"error-404-msg": "You tried to reach a page that does not exist",
+	"sorting-options": {
+		"Label": "Order by",
+		"Default": "Default",
+		"CategoryId": "Category id",
+		"CategoryName": "Category name",
+		"PriceAsc": "Price lower first",
+		"PriceDesc": "Price higher first",
+		"CreatedDate": "Date added old first",
+		"CreatedDateDesc": "Date added new first",
+		"NameAsc": "Name alphabetically",
+		"NameDesc": "Name alphabetically z-a"
+	}
 }
