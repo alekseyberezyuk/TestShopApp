@@ -11,6 +11,8 @@ namespace TestShopApplication.Api.Models
         public decimal Price { get; set; }
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
+        public long CreatedTimeStamp { get; set; }
+        public string ThumbnailBase64 { get; set; }
 
         public ItemResponsePresentation(Item item)
         {
@@ -20,6 +22,8 @@ namespace TestShopApplication.Api.Models
             Price = item.Price;
             CategoryId = item.CategoryId;
             CategoryName = item.CategoryName;
+            CreatedTimeStamp = item.CreatedTimeStamp;
+            ThumbnailBase64 = item.ThumbnailBase64;
         }
     }
 }

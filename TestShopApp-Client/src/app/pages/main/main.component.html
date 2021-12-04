@@ -16,15 +16,19 @@
             <mat-card-title-group>
               <mat-card-title>{{ item.name }}</mat-card-title>
               <mat-card-subtitle>{{ item.price | currency }}</mat-card-subtitle>
-              <!-- <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" > -->
+              <!-- TODO:  We need to start using property 'thumbnail' in class Item.
+                          If we haven't got any thumbnails for the item from server we should display a default thumbnail that we take from assets/thumbnails/{category_id}.png -->
+              <img mat-card-sm-image class="thumbnail">
             </mat-card-title-group>
             <mat-card-content>
               {{ item.description }}
             </mat-card-content>
-          </mat-card>        
+          </mat-card>
+            <!-- TODO: We need to start limiting the number of items we display and subscribe to event when mat-paginator value has changed.
+                       We should also change the code in ItemService to request the next/previous items -->
           <mat-paginator
            [length]="items?.length || 0"
-           [pageSize]="3">
+           [pageSize]="5">
           </mat-paginator>
         </mat-drawer-content>
     </mat-drawer-container>

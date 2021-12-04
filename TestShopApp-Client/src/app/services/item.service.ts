@@ -1,23 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from "src/app/environments/environment";
+import { Category, Item } from '../models';
 import { FilterParameters } from '../models/filterParameters';
-import { Item } from '../models/item';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ItemService { 
+export class ItemService {
   constructor(private http: HttpClient) { }
   
-  getAll(): Observable<Item[]> {
-    return this.http.get<Item[]>(environment.baseUrl + '/items');
-  }
-  
-  getFiltered(filterParameters: FilterParameters) {
-    let url = environment.baseUrl + '/items?';
-    url += `minPrice=${filterParameters.fromPrice || 0}`;
+  // TODO: Add new pagination parameters here. Check Swagger to see parameters responsible for pagination
+  get(filterParameters: FilterParameters) {
+    let url = `${environment.baseUrl}/items?minPrice=${filterParameters.fromPrice || 0}`;
     if (filterParameters.toPrice) {
       url += `&maxPrice=${filterParameters.toPrice}`;
     }
@@ -29,4 +25,8 @@ export class ItemService {
     } 
     return this.http.get<Item[]>(url);  
   }
+
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(environment.baseUrl + '/categories');
+  } 
 } 

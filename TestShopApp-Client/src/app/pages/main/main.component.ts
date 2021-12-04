@@ -2,9 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
-import { ItemService } from 'src/app/service/index';
+import { ItemService } from 'src/app/services/index';
 import { environment } from "src/app/environments/environment";
-import { Item } from 'src/app/models/item';
+import { Item } from 'src/app/models/index';
 import { FilterParameters } from 'src/app/models/filterParameters';
 
 @Component({
@@ -45,21 +45,20 @@ export class MainComponent implements OnInit {
   }
 
   filterParametersChanged(filterParameters: FilterParameters) {
-    // Remove later when no longer required
-    console.log(filterParameters);
-    this.itemsService.getFiltered(filterParameters).subscribe(itemsFromApi => {
+    this.itemsService.get(filterParameters).subscribe(itemsFromApi => {
       this.items = itemsFromApi; 
     });
   }
 
   ngOnInit(): void {
-    this.itemsService.getAll().subscribe(itemsFromApi => {
-      this.items = itemsFromApi;
-      this.categories = {};
-
-      for (const i of itemsFromApi) {
-        this.categories[i.categoryId] = i.categoryName;
+    this.categories = {};
+    this.itemsService.getCategories().subscribe(categories => {
+      for (const c of categories) {
+        this.categories[c.id] = c.name;
       }
+    });
+    this.itemsService.get(new FilterParameters()).subscribe(itemsFromApi => {
+      this.items = itemsFromApi;
     });
   }
 }

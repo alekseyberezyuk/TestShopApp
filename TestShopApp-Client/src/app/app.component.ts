@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeAnimation } from './animations/fade.animation';
-import { AuthService } from './service';
+import { AuthService } from './services';
 
 @Component({
   selector: 'app-root',

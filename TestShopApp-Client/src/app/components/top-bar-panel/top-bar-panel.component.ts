@@ -2,7 +2,7 @@ import { ChangeDetectorRef, AfterContentChecked, Component, ElementRef, OnInit, 
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { trigger, transition, animate, style } from '@angular/animations'
-import { AuthService } from 'src/app/service';
+import { AuthService } from 'src/app/services';
 
 @Component({
   selector: 'top-bar-panel',

@@ -29,6 +29,9 @@ namespace TestShopApplication.Api.Controllers
         /// <param name="maxPrice">A maximum allowed price</param>
         /// <param name="categories">A list of comma separated category ids eg. 1,2,3</param>
         /// <param name="searchParam">A text search parameter</param>
+        /// <param name="pageNumber">The current page number</param>
+        /// <param name="itemsPerPage">How many items per page</param>
+        /// <param name="orderBy">Which property use to order items. By default it orders by creation date in reverse order</param>
         /// <returns>All the items or only those that match the condition in filter</returns>
         [HttpGet]
         [Authorize(Roles = "User")]
@@ -39,7 +42,10 @@ namespace TestShopApplication.Api.Controllers
             [FromQuery] decimal minPrice = 0,
             [FromQuery] decimal? maxPrice = null,
             [FromQuery] string categories = null,
-            [FromQuery] string searchParam = null)
+            [FromQuery] string searchParam = null,
+            [FromQuery] int? pageNumber = null,
+            [FromQuery] int? itemsPerPage = null,
+            [FromQuery] OrderBy? orderBy = null)
         {
             if (minPrice < 0 || maxPrice <= 0 || minPrice >= maxPrice || !ValidateCategories(categories))
             {
@@ -51,7 +57,7 @@ namespace TestShopApplication.Api.Controllers
             {
                 return BadRequest();
             }
-            var filterParameters = new FilterParameters(minPrice, maxPrice, categoryList);
+            var filterParameters = new FilterParameters(minPrice, maxPrice, categoryList, orderBy);
             var items = await _itemsService.GetAll(filterParameters);
 
             if (searchParam != null)
@@ -61,6 +67,10 @@ namespace TestShopApplication.Api.Controllers
                     var selection = $"{i.CategoryName}:{i.Name}:{i.Description}".ToLowerInvariant();
                     return selection.Contains(searchParam.ToLowerInvariant());
                 });
+            }
+            if (itemsPerPage > 0 && pageNumber > 0)
+            {
+                items = items.Skip((pageNumber.Value - 1) * itemsPerPage.Value).Take(itemsPerPage.Value);
             }
             return Ok(items);
         }

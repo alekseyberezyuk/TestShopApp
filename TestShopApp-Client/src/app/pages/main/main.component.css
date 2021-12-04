@@ -51,3 +51,8 @@ mat-paginator {
     /* position: absolute; */
     width: 47%;
 }
+
+.thumbnail {
+    width: 4em;
+    height: 4em;
+}

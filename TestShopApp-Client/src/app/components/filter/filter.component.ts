@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
-import { FilterParameters } from 'src/app/models/filterParameters';
+import { FilterParameters } from '../../models/index'
 
 @Component({
   selector: 'shop-filter',

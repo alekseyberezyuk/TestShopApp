@@ -18,7 +18,7 @@ namespace TestShopApplication.Api.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Produces("application/json")]
         public IActionResult Get()
         {

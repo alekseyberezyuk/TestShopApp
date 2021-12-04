@@ -4,8 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
 import { AuthResponse } from 'src/app/models/authResponse';
-import { Credentials } from 'src/app/models/credentials';
-import { AuthService } from 'src/app/service/auth.service';
+import { Credentials } from 'src/app/models/index';
+import { AuthService } from 'src/app/services/auth.service';
 import { FormControl, Validators, } from "@angular/forms";
 
 @Component({
