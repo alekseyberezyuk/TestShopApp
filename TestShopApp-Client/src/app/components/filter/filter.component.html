@@ -30,7 +30,7 @@
             <input matInput type="text" [(ngModel)]="filter.searchParam" (keyup)="filterValueChanged(true)">
           </mat-form-field>
           <button mat-stroked-button color="primary" (click)="clear()">
-            <mat-label>Clear</mat-label>
+            <mat-label>{{ 'clear' | translate }}</mat-label>
           </button>
         </mat-card-content>
       </mat-card>

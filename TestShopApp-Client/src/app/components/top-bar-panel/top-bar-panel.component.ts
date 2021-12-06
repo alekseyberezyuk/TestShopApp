@@ -49,6 +49,7 @@ export class TopBarPanelComponent implements OnInit, AfterContentChecked {
 
   languageChanged() {
     this.translateService.setDefaultLang(this.language);
+    localStorage.setItem('testshopapp-lang', this.language);
     // const currentUrl = this.router.url;
     // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
     //     this.router.navigate([currentUrl]);
@@ -65,7 +66,8 @@ export class TopBarPanelComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit(): void {
-    this.language = this.translateService.getDefaultLang();
+    this.language = localStorage.getItem('testshopapp-lang') || this.translateService.getDefaultLang();
+    this.translateService.setDefaultLang(this.language);
   }
 
   ngAfterContentChecked() : void {

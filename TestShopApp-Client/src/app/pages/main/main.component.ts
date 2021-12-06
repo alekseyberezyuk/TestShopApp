@@ -62,6 +62,24 @@ export class MainComponent implements OnInit {
 
   orderByChanged() {
   }
+  
+  updateOrderbyOptions() {
+    this.orderByTranslations = {};
+    for (const key of Object.keys(OrderBy)) {
+      firstValueFrom(this.translateService.get(`sorting-options.${key}`)).then(t => {
+        this.orderByTranslations[key] = t;
+      });
+    }
+  }
+
+  getItemThumbnailSrc(item: Item) {
+    if (item.thumbnailBase64) {
+      return `data:image/png;base64,${item.thumbnailBase64}`;
+    } else {
+      return `../../../assets/images/thumbnails/${item.categoryId}.png`;
+    }
+  
+  }
 
   ngOnInit(): void {
     this.categories = {};
@@ -73,11 +91,9 @@ export class MainComponent implements OnInit {
     this.itemsService.get(this.filterParameters).subscribe(itemsFromApi => {
       this.items = itemsFromApi;
     });
-    this.orderByTranslations = {};
-    for (const key of Object.keys(OrderBy)) {
-      firstValueFrom(this.translateService.get(`sorting-options.${key}`)).then(t => {
-        this.orderByTranslations[key] = t;
-      });
-    }
+    this.updateOrderbyOptions();
+    this.translateService.onDefaultLangChange.subscribe(l => {
+      this.updateOrderbyOptions();
+    });
   }
 }
