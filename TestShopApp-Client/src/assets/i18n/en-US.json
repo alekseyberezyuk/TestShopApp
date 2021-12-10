@@ -38,5 +38,11 @@
 		"CreatedDateDesc": "Date added new first",
 		"NameAsc": "Name alphabetically",
 		"NameDesc": "Name alphabetically z-a"
+	},
+	"validation-errors": {
+		"invalidEmail": "Please enter a valid email address",
+		"invalidPwd": "Please enter a valid password",
+		"emailRequired": "Email is required",
+		"pwdRequired": "Password is required"
 	}
 }

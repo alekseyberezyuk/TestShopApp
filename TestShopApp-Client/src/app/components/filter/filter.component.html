@@ -17,17 +17,19 @@
           <br>
           <mat-form-field appearance="outline">
             <mat-label>{{ 'filter.from-price' | translate }}</mat-label>
-            <input matInput type="number" [(ngModel)]="filter.fromPrice" (change)="filterValueChanged()">
+            <input matInput type="text" [formControl]="fromPriceFormControl" (change)="filterValueChanged()">
           </mat-form-field>
+          <mat-error *ngIf="fromPriceFormControl.hasError('invalid')">
+          </mat-error>
           <br>
           <mat-form-field appearance="outline">
             <mat-label>{{ 'filter.to-price' | translate }}</mat-label>
-            <input matInput type="number" [(ngModel)]="filter.toPrice" (change)="filterValueChanged()">
+            <input matInput type="text" [formControl]="toPriceFormControl" (change)="filterValueChanged()">
           </mat-form-field>
           <br>
           <mat-form-field appearance="outline">
             <mat-label>{{ 'search' | translate }}</mat-label>
-            <input matInput type="text" [(ngModel)]="filter.searchParam" (keyup)="filterValueChanged(true)">
+            <input matInput type="text" [formControl]="searchFormControl" (keyup)="filterValueChanged(true)">
           </mat-form-field>
           <button mat-stroked-button color="primary" (click)="clear()">
             <mat-label>{{ 'clear' | translate }}</mat-label>

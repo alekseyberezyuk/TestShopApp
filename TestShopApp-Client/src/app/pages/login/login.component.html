@@ -8,22 +8,22 @@
         <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>{{ 'username' | translate }}</mat-label>
              <input type="email" matInput [formControl]="usernameFormControl">
-             <mat-error *ngIf="usernameFormControl.hasError('email') && !usernameFormControl.hasError('required')">
-                Please enter a valid email address
+             <mat-error *ngIf="!usernameFormControl.hasError('required') && (usernameFormControl.hasError('email') || usernameFormControl.hasError('minlength'))">
+                {{ 'validation-errors.invalidEmail' | translate }}
             </mat-error>
             <mat-error *ngIf="usernameFormControl.hasError('required')">
-                Email is <strong>required</strong>
+                {{ 'validation-errors.emailRequired' | translate }}
             </mat-error>
         </mat-form-field>
 
         <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>{{ 'enter-pass' | translate }}</mat-label>
             <input type="password" matInput [formControl]="passwordFormControl">
-            <mat-error *ngIf="passwordFormControl.hasError('password') && !passwordFormControl.hasError('required')">
-                Please enter a valid password
+            <mat-error *ngIf="!passwordFormControl.hasError('required') && (passwordFormControl.hasError('password') || passwordFormControl.hasError('maxlength'))">
+                {{ 'validation-errors.invalidPwd' | translate }}
             </mat-error>
             <mat-error *ngIf="passwordFormControl.hasError('required')">
-                Password is <strong>required</strong>
+                {{ 'validation-errors.pwdRequired' | translate }}
             </mat-error>
         </mat-form-field>
         <mat-card-actions>

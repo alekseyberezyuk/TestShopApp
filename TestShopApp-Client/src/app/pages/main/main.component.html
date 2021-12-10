@@ -25,8 +25,6 @@
             <mat-card-title-group>
               <mat-card-title>{{ item.name }}</mat-card-title>
               <mat-card-subtitle>{{ item.price | currency }}</mat-card-subtitle>
-              <!-- TODO:  We need to start using property 'thumbnail' in class Item.
-                          If we haven't got any thumbnails for the item from server we should display a default thumbnail that we take from assets/thumbnails/{category_id}.png -->
               <img mat-card-sm-image class="thumbnail" [src]="getItemThumbnailSrc(item)">
             </mat-card-title-group>
             <mat-card-content>

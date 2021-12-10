@@ -24,8 +24,7 @@ export class LoginComponent implements OnInit {
     private translateService: TranslateService,
     private router: Router, 
   ) {
-  }
-  
+  } 
   
   btnClicked() {
     if (this.usernameFormControl.valid && this.passwordFormControl.valid) {
@@ -51,7 +50,7 @@ export class LoginComponent implements OnInit {
     if(this.authService.isAuthenticated()) {
       this.router.navigateByUrl('main'); 
     }
-    this.usernameFormControl =  new FormControl(this.creds.username, [Validators.required, Validators.email]);
-    this.passwordFormControl = new FormControl(this.creds.password, Validators.required);
+    this.usernameFormControl =  new FormControl(this.creds.username, [Validators.required, Validators.email, Validators.minLength(6), Validators.maxLength(64)]);
+    this.passwordFormControl = new FormControl(this.creds.password, [Validators.required, Validators.maxLength(32)]);
   }
 }
