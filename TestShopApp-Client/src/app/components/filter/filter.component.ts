@@ -51,7 +51,7 @@ export class FilterComponent implements OnInit {
     let fromPrice = 0;
     let toPrice = 0;
 
-    if (this.fromPriceFormControl.valid) {
+    if (this.fromPriceFormControl.valid || this.fromPriceFormControl.hasError('tooBig')) {
       if (this.filter.fromPrice) {
         fromPrice = parseInt(this.filter.fromPrice);
         if (fromPrice >= 0) {
@@ -63,7 +63,7 @@ export class FilterComponent implements OnInit {
         }
       }
     }
-    if (this.toPriceFormControl.valid) {
+    if (this.toPriceFormControl.valid || this.toPriceFormControl.hasError('tooSmall')) {
       if (this.filter.toPrice) {
         toPrice = parseInt(this.filter.toPrice);
         if (toPrice >= 0) {
@@ -76,8 +76,11 @@ export class FilterComponent implements OnInit {
       }
     }
     if (withFromPrice && withToPrice && fromPrice > toPrice) {
-      this.fromPriceFormControl.setErrors({ invalid: true });
-      this.toPriceFormControl.setErrors({ invalid: true });
+      this.fromPriceFormControl.setErrors({ tooBig: true });
+      this.toPriceFormControl.setErrors({ tooSmall: true });
+    } else {
+      this.fromPriceFormControl.setErrors(null);
+      this.toPriceFormControl.setErrors(null);
     }
     if (this.searchFormControl.valid) {
         this.searchFormControl.setErrors(null);

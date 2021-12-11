@@ -10,6 +10,7 @@ namespace TestShopApplication.Dal.Repositories
     public class UserCartRepository : IUserCartRepository
     {
         private string ConnectionString { get; }
+
         public UserCartRepository(string connectionString)
         {
             ConnectionString = connectionString;
