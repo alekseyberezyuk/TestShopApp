@@ -17,7 +17,7 @@ namespace TestShopApplication.Dal.Repositories
 
         public async ValueTask<UserSecurityDetails> GetUserSecurityDetails(string username)
         {
-            var query = @"SELECT u.[id] as UserId, u.[password] as PasswordHash, r.[role_name] as Role FROM users AS u
+            var query = @"SELECT u.[id] as UserId, u.[password] as PasswordHash, u.[first_name], u.[last_name], r.[role_name] as Role FROM users AS u
                         JOIN user_roles AS r
                         ON u.role_id = r.id
                         WHERE u.username = @username";

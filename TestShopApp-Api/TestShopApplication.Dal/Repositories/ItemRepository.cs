@@ -40,7 +40,6 @@ namespace TestShopApplication.Dal.Repositories
                     sb.Append($" AND i.price <= @maxPrice ");
                     parameters.Add("maxPrice", filterParameters.MaxPrice);
                 }
-
                 if (withCategories)
                 {
                     sb.Append(" AND i.category_id IN (");

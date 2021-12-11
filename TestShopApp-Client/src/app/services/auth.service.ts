@@ -14,6 +14,11 @@ export class AuthService {
     // TODO: Use rxjs methods 'pipe' and 'tap' to set the token here
     return this.http.post(environment.baseUrl + '/Auth', creds).pipe(tap(data => {
       this.setToken(data['token']);
+      var userDetails = {
+        firstName: data['firstName'],
+        lastName: data['lastName']
+      }
+      this.saveUserDetails(userDetails);
       this.saveUserName(creds.username);
     }));
   }
@@ -42,5 +47,13 @@ export class AuthService {
 
   getUserName() {
     return localStorage.getItem('testshopapp-username');
+  }
+
+  saveUserDetails(userDetails: any) {
+    localStorage.setItem('testshopapp-userDetails', JSON.stringify(userDetails));
+  }
+
+  getUserDetails(): any {
+    return JSON.parse(localStorage.getItem('testshopapp-userDetails') || '{}');
   }
 }

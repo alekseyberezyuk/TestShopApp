@@ -28,12 +28,12 @@ namespace TestShopApplication.Api.Services
             Issuer ??= configuration["JWT:ValidIssuer"];
         }
 
-        public async Task<(bool userExists, string token)> Authenticate(LoginDataPresentation loginData)
+        public async Task<(bool userExists, string token, string firstName, string lastName)> Authenticate(LoginDataPresentation loginData)
         {
             try
             {
-                var userSecurityDetails = await AuthRepository.GetUserSecurityDetails(loginData.Username);
-                (bool userExists, string token) result = (false, null);
+                UserSecurityDetails userSecurityDetails = await AuthRepository.GetUserSecurityDetails(loginData.Username);
+                (bool userExists, string token, string firstName, string lastName) result = (false, null, null, null);
 
                 if (userSecurityDetails != null
                     && !string.IsNullOrWhiteSpace(userSecurityDetails.PasswordHash)
@@ -44,7 +44,6 @@ namespace TestShopApplication.Api.Services
                         new Claim("name", userSecurityDetails.UserId.ToString()),
                         new Claim("jti", Guid.NewGuid().ToString()),
                     };
-
                     foreach (var role in Enum.GetValues(typeof(ShopAppUserRole)).Cast<ShopAppUserRole>().Where(r => r <= userSecurityDetails.Role))
                     {
                         authClaims.Add(new Claim("role", role.ToString()));
@@ -57,12 +56,14 @@ namespace TestShopApplication.Api.Services
                         signingCredentials: new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256));
                     result.token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
                     result.userExists = true;
+                    result.firstName = userSecurityDetails.FirstName;
+                    result.lastName = userSecurityDetails.LastName;
                 }
                 return result;
             }
             catch (Exception ex)
             {
-                return (false, null);
+                return (false, null, null, null);
             }
         }
     }

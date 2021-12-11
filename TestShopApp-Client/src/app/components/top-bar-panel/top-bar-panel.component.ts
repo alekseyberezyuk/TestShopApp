@@ -24,20 +24,11 @@ export class TopBarPanelComponent implements OnInit, AfterContentChecked {
   @Input() showMenu!: boolean;
   
   language!: string;
+  user!: string;
 
   get languageLabel() {
     return this.language.split('-')[0].toUpperCase();
-  }
-
-  get getUserName() {
-    let userName = this.authService.getUserName();
-    userName = userName ? userName.split('@')[0] : '';
-
-    if (userName.length > 0) {
-      userName = userName[0].toUpperCase() + userName.substr(1).toLowerCase();
-    }
-    return userName;
-  }
+  }  
 
   constructor(
     public authService: AuthService,
@@ -65,9 +56,24 @@ export class TopBarPanelComponent implements OnInit, AfterContentChecked {
     this.router.navigateByUrl(url);
   }
 
+  getUserName() {
+    const userDetails = this.authService.getUserDetails();
+    if (userDetails && userDetails.firstName) {
+      return userDetails.firstName;
+    }
+    let userName = this.authService.getUserName();
+    userName = userName ? userName.split('@')[0] : '';
+
+    if (userName.length > 0) {
+      userName = userName[0].toUpperCase() + userName.substr(1).toLowerCase();
+    }
+    return userName;
+  }
+
   ngOnInit(): void {
     this.language = localStorage.getItem('testshopapp-lang') || this.translateService.getDefaultLang();
     this.translateService.setDefaultLang(this.language);
+    this.user = this.getUserName();
   }
 
   ngAfterContentChecked() : void {
