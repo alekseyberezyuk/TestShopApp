@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestShopApplication.Api</name>
+    </assembly>
+    <members>
+        <member name="M:TestShopApplication.Api.Controllers.AuthController.Authenticate(TestShopApplication.Api.Models.LoginDataPresentation)">
+            <summary>
+            Authenticates user
+            </summary>
+            <param name="loginData">A json object with username and password</param>
+            <returns>A result of the operation</returns>
+        </member>
+        <member name="M:TestShopApplication.Api.Controllers.ItemsController.GetAll(System.Decimal,System.Nullable{System.Decimal},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{TestShopApplication.Dal.Models.OrderBy},System.Nullable{System.Boolean})">
+            <summary>
+            Gets items with optional parameters to filter them
+            </summary>
+            <param name="minPrice">A minimum allowed price</param>
+            <param name="maxPrice">A maximum allowed price</param>
+            <param name="categories">A list of comma separated category ids eg. 1,2,3</param>
+            <param name="searchParam">A text search parameter</param>
+            <param name="pageNumber">The current page number</param>
+            <param name="itemsPerPage">How many items per page</param>
+            <param name="orderBy">Which property use to order items. By default it orders by creation date in reverse order</param>
+            <returns>All the items or only those that match the condition in filter</returns>
+        </member>
+        <member name="M:TestShopApplication.Api.Controllers.ItemsController.Get(System.Guid)">
+            <summary>
+            Gets a specific item by id
+            </summary>
+            <param name="itemId">An item id</param>
+            <returns>An item found</returns>
+        </member>
+        <member name="M:TestShopApplication.Api.Controllers.ItemsController.AddItem(TestShopApplication.Api.Models.ItemPresentation)">
+            <summary>
+            Adds a new item
+            </summary>
+            <param name="item">Adds a new item</param>
+            <returns>Status code and Id of the new item if success</returns>
+        </member>
+        <member name="M:TestShopApplication.Api.Controllers.ItemsController.UpdateItem(System.Guid,TestShopApplication.Api.Models.ItemPresentation)">
+            <summary>
+            Updates an existing item
+            </summary>
+            <param name="itemId">Existing item's id</param>
+            <param name="item">An updated item to update the existing item with</param>
+            <returns>Status code and the updated item if success</returns>
+        </member>
+        <member name="M:TestShopApplication.Api.Controllers.ItemsController.DeleteItem(System.Guid)">
+            <summary>
+            Removes an item
+            </summary>
+            <param name="itemId">The id of the item that needs to be removed</param>
+            <returns>True when the item deleted, false when the item was not found</returns>
+        </member>
+    </members>
+</doc>

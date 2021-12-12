@@ -27,20 +27,18 @@ namespace TestShopApplication.Api.Controllers
         [ProducesResponseType(typeof(AuthResponsePresentation), 200)]
         public async Task<IActionResult> Authenticate([FromBody] LoginDataPresentation loginData)
         {
-            var (userExists, token, firstName, lastName) = await AuthService.Authenticate(loginData);
+            var (userExists, token) = await AuthService.Authenticate(loginData);
             var isSuccess = userExists && !string.IsNullOrWhiteSpace(token);
-            AuthResponsePresentation authResult = new();
+            var authResult = new AuthResponsePresentation();
 
             if (isSuccess)
             {
                 authResult = new AuthResponsePresentation
                 {
                     IsSuccess = isSuccess,
-                    Token = token,
-                    FirstName = firstName,
-                    LastName = lastName
+                    Token = token
                 };
-            }
+            }            
             return Ok(authResult);
         }
     }

@@ -13,10 +13,12 @@ export class AuthService {
   authenticate(creds: Credentials): Observable<any> {
     // TODO: Use rxjs methods 'pipe' and 'tap' to set the token here
     return this.http.post(environment.baseUrl + '/Auth', creds).pipe(tap(data => {
-      this.setToken(data['token']);
+      const token = data['token'];
+      this.setToken(token);
+      const payload = JSON.parse(atob(token.split('.')[1]));
       var userDetails = {
-        firstName: data['firstName'],
-        lastName: data['lastName']
+        firstName: payload['firstname'],
+        lastName: payload['lastname']
       }
       this.saveUserDetails(userDetails);
       this.saveUserName(creds.username);

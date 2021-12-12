@@ -9,6 +9,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="App_Data\TestShopApp.mdf" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="App_Data\TestShopApp.mdf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.12" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.12" />

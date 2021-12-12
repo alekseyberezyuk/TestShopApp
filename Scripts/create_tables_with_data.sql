@@ -33,7 +33,8 @@ create table user_details
 	address_line_2 varchar(256),
 	city varchar(64),
 	country varchar(64),
-	zip_code nvarchar(32)
+	zip_code nvarchar(32),
+	phone_number nvarchar(50)
 )
 go
 
@@ -43,7 +44,7 @@ create table user_preferences
 		constraint user_preferences_users_id_fk
 			references users,
 	language varchar(32),
-	theme    varchar(16)
+	theme    varchar(24)
 )
 go
 
@@ -87,7 +88,7 @@ create table orders
 			references users,
 	price      money,
 	status     varchar(24),
-	created_at datetime
+	created_timestamp bigint
 )
 go
 
@@ -129,8 +130,8 @@ INSERT INTO [dbo].[users] ([id] ,[username] ,[password] ,[first_name] ,[last_nam
 INSERT INTO [dbo].[user_preferences] ([user_id],[language],[theme])
 	VALUES ('8c9fd3a8-d0d8-4c0c-9bf3-dae9eeffc87c', 'ru-Ru', 'Light')
 
-INSERT INTO [dbo].[user_details] ([user_id] ,[address_line_1] ,[address_line_2] ,[city] ,[country] ,[zip_code])
-		VALUES ('8c9fd3a8-d0d8-4c0c-9bf3-dae9eeffc87c', 'Sumska street 7/9, flat 14', NULL, 'Kharkiv', 'Ukraine', '61057')
+INSERT INTO [dbo].[user_details] ([user_id] ,[address_line_1] ,[address_line_2] ,[city] ,[country] ,[zip_code], [phone_number])
+		VALUES ('8c9fd3a8-d0d8-4c0c-9bf3-dae9eeffc87c', 'Sumska street 7/9, flat 14', NULL, 'Kharkiv', 'Ukraine', '61057', '+380990123456')
 
 INSERT INTO [dbo].[item_categories] ([category_name])
 		VALUES ('Turquoise'),('Agate'),('Diamond'),('Emerald'),('Onyx'),('Opal'),('Pearl'),('Ruby'),('Sapphire'),('Topaz')

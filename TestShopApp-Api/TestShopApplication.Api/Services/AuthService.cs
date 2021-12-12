@@ -28,12 +28,12 @@ namespace TestShopApplication.Api.Services
             Issuer ??= configuration["JWT:ValidIssuer"];
         }
 
-        public async Task<(bool userExists, string token, string firstName, string lastName)> Authenticate(LoginDataPresentation loginData)
+        public async Task<(bool userExists, string token)> Authenticate(LoginDataPresentation loginData)
         {
             try
             {
                 UserSecurityDetails userSecurityDetails = await AuthRepository.GetUserSecurityDetails(loginData.Username);
-                (bool userExists, string token, string firstName, string lastName) result = (false, null, null, null);
+                (bool userExists, string token) result = (false, null);
 
                 if (userSecurityDetails != null
                     && !string.IsNullOrWhiteSpace(userSecurityDetails.PasswordHash)
@@ -54,16 +54,16 @@ namespace TestShopApplication.Api.Services
                         expires: DateTime.Now.AddHours(1),
                         claims: authClaims,
                         signingCredentials: new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256));
+                    jwtToken.Payload.Add("firstname", userSecurityDetails.FirstName);
+                    jwtToken.Payload.Add("lastname", userSecurityDetails.LastName);
                     result.token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
                     result.userExists = true;
-                    result.firstName = userSecurityDetails.FirstName;
-                    result.lastName = userSecurityDetails.LastName;
                 }
                 return result;
             }
             catch (Exception ex)
             {
-                return (false, null, null, null);
+                return (false, null);
             }
         }
     }
