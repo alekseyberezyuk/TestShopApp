@@ -1,6 +1,6 @@
 export enum OrderBy {
-    Default = '',
-    CategoryId = 'CategoryId',
+    Default = 'Default',
+    //CategoryId = 'CategoryId',
     CategoryName = 'CategoryName',
     PriceAsc = 'PriceAsc',
     PriceDesc = 'PriceDesc',

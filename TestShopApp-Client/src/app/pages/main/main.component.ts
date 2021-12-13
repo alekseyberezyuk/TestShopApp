@@ -61,6 +61,9 @@ export class MainComponent implements OnInit {
   }
 
   orderByChanged() {
+    this.itemsService.get(this.filterParameters).subscribe(itemsFromApi => {
+      this.items = itemsFromApi; 
+    });
   }
   
   updateOrderbyOptions() {

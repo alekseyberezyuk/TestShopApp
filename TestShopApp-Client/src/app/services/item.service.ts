@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from "src/app/environments/environment";
-import { Category, Item } from '../models';
+import { Category, Item, OrderBy } from '../models';
 import { FilterParameters } from '../models/filterParameters';
 
 @Injectable({
@@ -23,6 +23,9 @@ export class ItemService {
     if(filterParameters.searchParam) {
       url += `&searchParam=${filterParameters.searchParam}`;
     } 
+    if(filterParameters.orderBy != OrderBy.Default) {
+      url += `&orderBy=${filterParameters.orderBy}`;
+    }
     return this.http.get<Item[]>(url);  
   }
 

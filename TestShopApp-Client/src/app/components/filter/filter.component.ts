@@ -14,7 +14,7 @@ export class FilterComponent implements OnInit {
                
   filter: FilterParameters = new FilterParameters();
   timeout: any = null;
-  numbersOnlyRegex: RegExp = /^[1-9][0-9]*/;
+  numbersOnlyRegex: RegExp = /^[1-9][0-9]*$/;
   searchParamRegex: RegExp = /^[0-9a-zA-Z,.\-='!@#$%^&*]*$/;
   
   public fromPriceFormControl!: FormControl;
@@ -75,12 +75,14 @@ export class FilterComponent implements OnInit {
         }
       }
     }
-    if (withFromPrice && withToPrice && fromPrice > toPrice) {
-      this.fromPriceFormControl.setErrors({ tooBig: true });
-      this.toPriceFormControl.setErrors({ tooSmall: true });
-    } else {
-      this.fromPriceFormControl.setErrors(null);
-      this.toPriceFormControl.setErrors(null);
+    if (withFromPrice && withToPrice) {
+      if (fromPrice > toPrice) {
+        this.fromPriceFormControl.setErrors({ tooBig: true });
+        this.toPriceFormControl.setErrors({ tooSmall: true });
+      } else {
+        this.fromPriceFormControl.setErrors(null);
+        this.toPriceFormControl.setErrors(null);
+      }
     }
     if (this.searchFormControl.valid) {
         this.searchFormControl.setErrors(null);

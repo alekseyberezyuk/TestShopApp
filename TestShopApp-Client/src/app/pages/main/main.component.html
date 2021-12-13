@@ -16,7 +16,7 @@
               <select
                value="Default"
                [(ngModel)]="filterParameters.orderBy"
-               (selectionChange)="orderByChanged()">
+               (change)="orderByChanged()">
                   <option *ngFor="let key of KeysForOrderBy" [value]="key">{{ orderByTranslations[key] }}</option>
               </select>
           </div>
