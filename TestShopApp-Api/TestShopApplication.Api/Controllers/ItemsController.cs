@@ -32,11 +32,12 @@ namespace TestShopApplication.Api.Controllers
         /// <param name="pageNumber">The current page number</param>
         /// <param name="itemsPerPage">How many items per page</param>
         /// <param name="orderBy">Which property use to order items. By default it orders by creation date in reverse order</param>
+        /// <param name="includeThumbnails">Whether to return thumbnails</param>
         /// <returns>All the items or only those that match the condition in filter</returns>
         [HttpGet]
         [Authorize(Roles = "User")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ItemsPresentation), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll(
             [FromQuery] decimal minPrice = 0,
             [FromQuery] decimal? maxPrice = null,
@@ -68,11 +69,16 @@ namespace TestShopApplication.Api.Controllers
                     return selection.Contains(searchParam.ToLowerInvariant());
                 });
             }
+            var response = new ItemsPresentation
+            {
+                TotalItems = items.Count()
+            };
             if (itemsPerPage > 0 && pageNumber > 0)
             {
                 items = items.Skip((pageNumber.Value - 1) * itemsPerPage.Value).Take(itemsPerPage.Value);
             }
-            return Ok(items);
+            response.Items = items;
+            return Ok(response);
         }
 
         /// <summary>
