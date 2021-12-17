@@ -23,6 +23,8 @@ export class MainComponent implements OnInit {
   categories!: {};
   filterParameters: FilterParameters = new FilterParameters();
   orderByTranslations!: {};
+  itemsTotal!: number;
+  currentPage: number = 1;
 
   get FilterOpened() {
     return this.filterOpened;
@@ -55,15 +57,11 @@ export class MainComponent implements OnInit {
   filterParametersChanged(filterParameters: FilterParameters) {
     filterParameters.orderBy = this.filterParameters.orderBy;
     this.filterParameters = filterParameters;
-    this.itemsService.get(filterParameters).subscribe(itemsFromApi => {
-      this.items = itemsFromApi; 
-    });
+    this.getItems();
   }
 
   orderByChanged() {
-    this.itemsService.get(this.filterParameters).subscribe(itemsFromApi => {
-      this.items = itemsFromApi; 
-    });
+    this.getItems();
   }
   
   updateOrderbyOptions() {
@@ -84,10 +82,18 @@ export class MainComponent implements OnInit {
   
   }
 
-  pageChanged(event) {
-    console.log(event);
+  pageChanged(currentPage) {
+    this.currentPage = currentPage + 1;
+    this.getItems();
   }
   
+  getItems() {
+    this.itemsService.get(this.filterParameters, this.currentPage).subscribe(itemResponseFromApi => {
+      this.items = itemResponseFromApi.items;
+      this.itemsTotal = itemResponseFromApi.totalItems;  
+    });
+  }
+
   ngOnInit(): void {
     this.categories = {};
     this.itemsService.getCategories().subscribe(categories => {
@@ -95,10 +101,7 @@ export class MainComponent implements OnInit {
         this.categories[c.id] = c.name;
       }
     });
-    this.itemsService.get(this.filterParameters).subscribe(itemsFromApi => {
-      this.items = itemsFromApi;
-      console.log(this.items.length);
-    });
+    this.getItems();
     this.updateOrderbyOptions();
     this.translateService.onDefaultLangChange.subscribe(l => {
       this.updateOrderbyOptions();

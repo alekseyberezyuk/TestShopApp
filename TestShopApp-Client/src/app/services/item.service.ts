@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from "src/app/environments/environment";
-import { Category, Item, OrderBy } from '../models';
+import { Category, ItemsResponse, OrderBy } from '../models';
 import { FilterParameters } from '../models/filterParameters';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class ItemService {
   constructor(private http: HttpClient) { }
   
   // TODO: Add new pagination parameters here. Check Swagger to see parameters responsible for pagination
-  get(filterParameters: FilterParameters) {
+  get(filterParameters: FilterParameters, currentPage: number) {
     let url = `${environment.baseUrl}/items?minPrice=${filterParameters.fromPrice || 0}`;
     if (filterParameters.toPrice) {
       url += `&maxPrice=${filterParameters.toPrice}`;
@@ -27,8 +27,8 @@ export class ItemService {
       url += `&orderBy=${filterParameters.orderBy}`;
     }
     url += `&itemsPerPage=5`;
-    url += `&pageNumber=1`;
-    return this.http.get<Item[]>(url);  
+    url += `&pageNumber=${currentPage}`;
+    return this.http.get<ItemsResponse>(url);  
   }
 
   getCategories(): Observable<Category[]> {

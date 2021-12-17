@@ -22,6 +22,7 @@
             <param name="pageNumber">The current page number</param>
             <param name="itemsPerPage">How many items per page</param>
             <param name="orderBy">Which property use to order items. By default it orders by creation date in reverse order</param>
+            <param name="includeThumbnails">Whether to return thumbnails</param>
             <returns>All the items or only those that match the condition in filter</returns>
         </member>
         <member name="M:TestShopApplication.Api.Controllers.ItemsController.Get(System.Guid)">
