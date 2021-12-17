@@ -17,7 +17,7 @@ namespace TestShopApplication.Dal.Repositories
         
         public async Task<IEnumerable<Order>> GetAll(Guid userId)
         {
-            var request = $"SELECT order_id as orderId, price, status, created_at as createdAt " +
+            var request = $"SELECT order_id as orderId, price, status, created_timestamp as createdTimestamp " +
                           $"FROM [orders] " +
                           $"WHERE user_id='{userId}'";
             using var connection = new SqliteConnection(ConnectionString);
