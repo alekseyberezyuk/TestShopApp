@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Dapper;
 using TestShopApplication.Dal.Models;
+using ExtensionsPack.Core;
 
 namespace TestShopApplication.Dal.Repositories
 {
@@ -65,7 +66,7 @@ namespace TestShopApplication.Dal.Repositories
                            $"LEFT JOIN [item_categories] ic ON i.category_id = ic.category_id " +
                            $"WHERE item_id=@itemId AND is_deleted=0";
             using var connection = new SqliteConnection(ConnectionString);
-            var result = await connection.QuerySingleAsync<Item>(query, new
+            var result = await connection.QuerySingleOrDefaultAsync<Item>(query, new
             {
                 itemId = itemId.ToString()
             });
@@ -74,8 +75,8 @@ namespace TestShopApplication.Dal.Repositories
 
         public async ValueTask<Guid> TryAdd(Item item)
         {
-            var request = $"INSERT INTO [items] (item_id, name, description, price, category_id, is_deleted) " +
-                          $"VALUES (@itemId, @name, @description, @price, @categoryId, 0)";
+            var request = $"INSERT INTO [items] (item_id, name, description, category_id, price, created_timestamp, is_deleted, thumbnail) " +
+                          $"VALUES (@itemId, @name, @description, @categoryId, @price, @createdTimestamp, 0, @thumbnail)";
             using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
             {
@@ -83,7 +84,9 @@ namespace TestShopApplication.Dal.Repositories
                 name = item.Name,
                 description = item.Description,
                 price = item.Price,
-                categoryId = item.CategoryId
+                categoryId = item.CategoryId,
+                createdTimestamp = item.CreatedTimeStamp,
+                thumbnail = item.ThumbnailBase64
             });
             return result > 0 ? Guid.Parse(item.ItemId) : Guid.Empty;
         }

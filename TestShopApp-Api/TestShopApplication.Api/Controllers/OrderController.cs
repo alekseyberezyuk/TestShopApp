@@ -20,8 +20,7 @@ namespace TestShopApplication.Api.Controllers
             _ordersService = ordersService;
         }
         [HttpGet("{order_id}")]
-        public async Task<IActionResult> GetAll(
-            [FromRoute(Name = "order_id")] Guid orderId)
+        public async Task<IActionResult> GetAll([FromRoute(Name = "order_id")] Guid orderId)
         {
             return Ok(await _ordersService.GetAllItems(orderId));
         }

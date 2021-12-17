@@ -32,7 +32,28 @@ namespace TestShopApplication.Api.Services
             };
         }
 
-        public async Task<Response<bool>> DeleteItemToCart(ShoppingCartItem item)
+        public async Task<Response<bool>> UpdateItemQuantity(ShoppingCartItem item)
+        {
+            var existingContent = await _userCartRepository.GetShoppingCartItem(Guid.Parse(item.ItemId),
+                Guid.Parse(item.UserId));
+            if (existingContent == null) 
+            {
+                return new Response<bool>
+                {
+                    Success = false,
+                    Errors = new List<string> { $"The item {item.ItemId} doesn't exist in user's {item.UserId} shopping cart" }
+                };
+            }
+
+            var result = await _userCartRepository.UpdateItemQuantity(item);
+            return new Response<bool>
+            {
+                Success = result != Guid.Empty,
+                Result = result != Guid.Empty
+            };
+        }
+
+        public async Task<Response<bool>> DeleteItemFromCart(ShoppingCartItem item)
         {
             item.AddedTimeStamp = DateTime.Now.ToUnixUtcTimeStamp();
             var result = await _userCartRepository.RemoveItemFromCart(item);

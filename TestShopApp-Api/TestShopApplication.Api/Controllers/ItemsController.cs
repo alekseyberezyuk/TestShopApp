@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using TestShopApplication.Dal.Models;
 using TestShopApplication.Api.Models;
 using TestShopApplication.Api.Services;
+using TestShopApplication.Api.Validators;
 
 namespace TestShopApplication.Api.Controllers
 {
@@ -15,11 +16,13 @@ namespace TestShopApplication.Api.Controllers
     [ApiController]
     public class ItemsController : Controller
     {
-        private readonly ItemsService _itemsService;
+        private ItemsService ItemsService { get; }
+        private IItemsValidator Validator { get; }
 
-        public ItemsController(ItemsService itemsService)
+        public ItemsController(ItemsService itemsService, IItemsValidator validator)
         {
-            _itemsService = itemsService;
+            ItemsService = itemsService;
+            Validator = validator;
         }
 
         /// <summary>
@@ -48,20 +51,22 @@ namespace TestShopApplication.Api.Controllers
             [FromQuery] OrderBy? orderBy = null,
             [FromQuery] bool? includeThumbnails = true)
         {
-            if (minPrice < 0 || maxPrice <= 0 || minPrice >= maxPrice || !ValidateCategories(categories))
-            {
-                return BadRequest(false);
-            }
-            var categoryList = ParseCategories(categories);
+            var (isSuccess, validationError) = Validator.Validate(minPrice, maxPrice, categories, searchParam, itemsPerPage, pageNumber);
 
-            if (categoryList == null || (searchParam != null && string.IsNullOrWhiteSpace(searchParam)))
+            if (!isSuccess)
             {
-                return BadRequest(false);
+                return BadRequest(validationError);
             }
-            var filterParameters = new FilterParameters(minPrice, maxPrice, categoryList, orderBy, includeThumbnails);
-            var items = await _itemsService.GetAll(filterParameters);
+            var (parsedCategories, parseCategoriesErrorMsg) = ParseCategories(categories);
 
-            if (searchParam != null)
+            if (parsedCategories == null)
+            {
+                return BadRequest(parseCategoriesErrorMsg);
+            }
+            var filterParameters = new FilterParameters(minPrice, maxPrice, parsedCategories, orderBy, includeThumbnails);
+            var items = await ItemsService.GetAll(filterParameters);
+
+            if (!string.IsNullOrWhiteSpace(searchParam))
             {
                 items = items.Where(i =>
                 {
@@ -69,7 +74,7 @@ namespace TestShopApplication.Api.Controllers
                     return selection.Contains(searchParam.ToLowerInvariant());
                 });
             }
-            var response = new ItemsPresentation
+            var itemsPresentation = new ItemsPresentation
             {
                 TotalItems = items.Count()
             };
@@ -77,8 +82,8 @@ namespace TestShopApplication.Api.Controllers
             {
                 items = items.Skip((pageNumber.Value - 1) * itemsPerPage.Value).Take(itemsPerPage.Value);
             }
-            response.Items = items;
-            return Ok(response);
+            itemsPresentation.Items = items;
+            return Ok(itemsPresentation);
         }
 
         /// <summary>
@@ -96,7 +101,8 @@ namespace TestShopApplication.Api.Controllers
             {
                 return BadRequest();
             }
-            return Ok(await _itemsService.GetById(itemId));
+            var item = await ItemsService.GetById(itemId);
+            return item != null ? Ok() : NotFound();
         }
 
         /// <summary>
@@ -110,7 +116,7 @@ namespace TestShopApplication.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> AddItem([FromBody]ItemPresentation item)
         {
-            var result = await _itemsService.Create(item);
+            var result = await ItemsService.Create(item);
 
             if (result.Success)
             {
@@ -130,7 +136,7 @@ namespace TestShopApplication.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateItem([FromRoute(Name = "itemId")]Guid itemId, [FromBody]ItemPresentation item)
         {
-            var result = await _itemsService.Update(itemId, item);
+            var result = await ItemsService.Update(itemId, item);
             if (result.Success)
             {
                 return Ok(result);
@@ -148,28 +154,24 @@ namespace TestShopApplication.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteItem([FromRoute(Name = "itemId")] Guid itemId)
         {
-            return Ok(await _itemsService.Delete(itemId));
+            return Ok(await ItemsService.Delete(itemId));
         }
 
-        private IList<string> ParseCategories(string categories)
+        private (IList<string> result, string errorMsg) ParseCategories(string categories)
         {
             string[] categoryList = categories?.Split('\u002C') ?? Array.Empty<string>();
 
-            if (categoryList.Distinct().Count() != categoryList.Length || categoryList.Any(c => !int.TryParse(c, out var x) || x <= 0))
+            if (categoryList.Distinct().Count() != categoryList.Length)
             {
-                return null;
+                return (null, "Duplicate category ids");
             }
-            return categoryList;
+            if (categoryList.Any(c => !int.TryParse(c, out var x) || x == 0 || x > 1000 || (x > 0 && c.ToString()[0] == '0')))
+            {
+                return (null, "All category ids must be valid numbers from 1 to 1000");
+            }
+            return (categoryList, null);
         }
 
-        private static bool ValidateCategories(string categories)
-        {
-            return categories == null
-                || (categories != ""
-                    && !categories.StartsWith(',')
-                    && !categories.EndsWith(',')
-                    && categories.All(c => c == ',' || char.IsDigit(c))
-                    && !categories.Where((c, i) => i > 0 && c == ',' && categories[i - 1] == ',').Any());
-        }
+
     }
 }

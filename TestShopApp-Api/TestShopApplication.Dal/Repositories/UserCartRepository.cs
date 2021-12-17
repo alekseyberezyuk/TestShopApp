@@ -18,10 +18,10 @@ namespace TestShopApplication.Dal.Repositories
         
         public async ValueTask<IEnumerable<ShoppingCartContentItem>> GetShoppingCart(Guid userId)
         {
-            var request = $"SELECT [user_carts].item_id, name, description, quantity, " +
+            var request = $"SELECT [user_cart_items].item_id, name, description, quantity, " +
                           $"(price * quantity) as price, added_timestamp " +
-                          $"FROM [user_carts] " +
-                          $"LEFT JOIN [items] ON [user_carts].item_id = [items].item_id " +
+                          $"FROM [user_cart_items] " +
+                          $"LEFT JOIN [items] ON [user_cart_items].item_id = [items].item_id " +
                           $"WHERE user_id = @userId";
 
             using var connection = new SqliteConnection(ConnectionString);
@@ -30,20 +30,27 @@ namespace TestShopApplication.Dal.Repositories
             return results;
         }
 
+        public async ValueTask<ShoppingCartItem> GetShoppingCartItem(Guid itemId, Guid userId)
+        {
+            var request = $"SELECT item_id, user_id, quantity, added_timestamp " +
+                          $"FROM [user_cart_items] " +
+                          $"WHERE item_id=@itemId AND user_id=@userId";
+
+            using var connection = new SqliteConnection(ConnectionString);
+            var result = await connection.QuerySingleOrDefaultAsync<ShoppingCartContentItem>(request,
+                new 
+                {
+                    itemId = itemId.ToString(),
+                    userId = userId.ToString() 
+                });
+
+            return result;
+        }
+
         public async ValueTask<Guid> AddItemToCart(ShoppingCartItem item)
         {
-            var request = $"IF EXISTS(SELECT * FROM [user_carts] WHERE item_id=@itemId " +
-                          $"AND user_id=@userId) " +
-                          $"BEGIN " +
-                              $"UPDATE [user_carts] " +
-                              $"SET quantity=quantity+@quantity, added_timestamp=@addedTimeStamp " +
-                              $"WHERE item_id=@itemId AND user_id=@userId " +
-                          $"END " +
-                          $"ELSE " +
-                          $"BEGIN " +
-                              $"INSERT INTO [user_carts](item_id, user_id, quantity, added_timestamp) " +
-                              "VALUES (@itemId, @userId, @quantity, @addedTimeStamp)" +
-                          $"END ";
+            var request = $"INSERT INTO [user_cart_items](item_id, user_id, quantity, added_timestamp) " +
+                              "VALUES (@itemId, @userId, @quantity, @addedTimeStamp)";
             await using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
                 {
@@ -56,30 +63,35 @@ namespace TestShopApplication.Dal.Repositories
             return result > 0 ? Guid.Parse(item.ItemId) : Guid.Empty;
         }
 
+        public async ValueTask<Guid> UpdateItemQuantity(ShoppingCartItem item) 
+        {
+            var request = $"UPDATE [user_cart_items] " +
+                          $"SET quantity=@quantity " +
+                          $"WHERE item_id=@itemId AND user_id=@userId ";
+            await using var connection = new SqliteConnection(ConnectionString);
+            var result = await connection.ExecuteAsync(request, new
+            {
+                itemId = item.ItemId.ToString(),
+                quantity = item.Quantity,
+                userId = item.UserId.ToString()
+            });
+
+            return Guid.Parse(item.ItemId);
+        }
+
         public async ValueTask<bool> RemoveItemFromCart(ShoppingCartItem item)
         {
-            var request = $"IF ((select quantity from user_carts " +
-                            $"WHERE item_id=@itemId AND user_id=@userId) = @quantity)\r\n" +
-                          $"BEGIN\r\n" +
-                            $"DELETE FROM user_carts "+
-                            $"WHERE item_id=@itemId AND user_id=@userId\r\n"+
-                          $"END\r\n" +
-                          $"ELSE\r\n" +
-                          $"BEGIN\r\n" +
-                            $"UPDATE [user_carts] " +
-                            $"SET quantity=quantity-1,added_timestamp=@addedTimeStamp " +
-                            $"WHERE item_id=@itemId AND user_id=@userId\r\n" +
-                          $"END\r\n";
+            var request = $"DELETE FROM user_cart_items WHERE item_id=@itemId AND user_id=@userId";
             using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
             {
                 itemId = item.ItemId.ToString(),
                 userId = item.UserId.ToString(),
-                quantity = item.Quantity,
-                addedTimeStamp = item.AddedTimeStamp
             });
 
             return result > 0;
         }
+
+        
     }
 }

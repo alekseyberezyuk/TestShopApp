@@ -27,20 +27,32 @@ namespace TestShopApplication.Api.Controllers
             return Ok(await _userCartService.GetShoppingCart(userId));
         }
 
-        [HttpPost("add/{itemId}/{quantity}")]
-        public async Task<IActionResult> AddToCart([FromRoute(Name = "itemId")]string itemId, 
-            [FromRoute(Name = "quantity")]int quantity)
+        [HttpPost("add/{itemId}")]
+        public async Task<IActionResult> AddToCart([FromRoute(Name = "itemId")]string itemId)
         {
-            if (quantity <= 0)
+            var userId = GetUserId();
+            return Ok(await _userCartService.AddItemToCart(new ShoppingCartItem
+            {
+                ItemId = itemId,
+                UserId = userId.ToString(),
+                Quantity = 1
+            }));
+        }
+
+        [HttpPatch("update/{itemId}/{quantity}")]
+        public async Task<IActionResult> UpdateCartItem([FromRoute(Name = "itemId")] string itemId,
+            [FromRoute(Name = "quantity")] int quantity)
+        {
+            if (quantity <= 0 || quantity > 30)
             {
                 return BadRequest(new Response<Guid>
                 {
                     Success = false,
-                    Errors = new List<string> {"The quantity must be more than 0."}
+                    Errors = new List<string> { "The quantity must be more than 0 and less than 30." }
                 });
             }
             var userId = GetUserId();
-            return Ok(await _userCartService.AddItemToCart(new ShoppingCartItem
+            return Ok(await _userCartService.UpdateItemQuantity(new ShoppingCartItem
             {
                 ItemId = itemId,
                 UserId = userId.ToString(),
@@ -48,23 +60,14 @@ namespace TestShopApplication.Api.Controllers
             }));
         }
 
-        [HttpDelete("delete/{itemId}/{quantity}")]
-        public async Task<IActionResult> DeleteFromCart([FromRoute(Name = "itemId")] Guid itemId,
-            [FromRoute(Name = "quantity")] int quantity)
+        [HttpDelete("delete/{itemId}")]
+        public async Task<IActionResult> DeleteFromCart([FromRoute(Name = "itemId")] Guid itemId)
         {
-            if (quantity <= 0)
-                return BadRequest(new Response<Guid>
-                {
-                    Success = false,
-                    Errors = new List<string> {"The quantity must be more than 0."}
-                });
-            
             var userId = GetUserId();
-            return Ok(await _userCartService.DeleteItemToCart(new ShoppingCartItem
+            return Ok(await _userCartService.DeleteItemFromCart(new ShoppingCartItem
             {
                 ItemId = itemId.ToString(),
                 UserId = userId.ToString(),
-                Quantity = quantity
             }));
         }
 

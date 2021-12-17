@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TestShopApplication.Dal.Repositories;
 using TestShopApplication.Api.Services;
-using Microsoft.Extensions.Configuration;
-using System.Linq;
-using System.Collections.Generic;
+using TestShopApplication.Api.Validators;
 
 namespace TestShopApplication.Api.DependencyInjection
 {
@@ -35,6 +36,7 @@ namespace TestShopApplication.Api.DependencyInjection
             {
                 services.AddSingleton(service);
             }
+            services.AddSingleton<IItemsValidator, ItemsValidator>();
             return services;
         }
     }

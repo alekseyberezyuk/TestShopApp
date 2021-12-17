@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TestShopApplication.Dal.Models;
 using TestShopApplication.Dal.Repositories;
 using TestShopApplication.Api.Models;
+using ExtensionsPack.Core;
 
 namespace TestShopApplication.Api.Services
 {
@@ -53,7 +54,8 @@ namespace TestShopApplication.Api.Services
         
         public async Task<ItemResponsePresentation> GetById(Guid itemId)
         {
-            return new ItemResponsePresentation(await _itemsRepository.GetById(itemId));
+            var itemIdDb = await _itemsRepository.GetById(itemId);
+            return itemIdDb != null ? new ItemResponsePresentation(itemIdDb) : null;
         }
         
         public async Task<Response<Guid>> Create(ItemPresentation item)
@@ -75,7 +77,8 @@ namespace TestShopApplication.Api.Services
                 Name = item.Name,
                 Description = item.Description,
                 Price = item.Price,
-                CategoryId = item.CategoryId
+                CategoryId = item.CategoryId,
+                CreatedTimeStamp = DateTime.Now.ToUnixUtcTimeStamp()
             });
             return new Response<Guid>
             {

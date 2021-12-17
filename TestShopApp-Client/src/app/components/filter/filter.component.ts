@@ -15,7 +15,7 @@ export class FilterComponent implements OnInit {
   filter: FilterParameters = new FilterParameters();
   timeout: any = null;
   numbersOnlyRegex: RegExp = /^[1-9][0-9]*$/;
-  searchParamRegex: RegExp = /^[0-9a-zA-Z,.\-='!@#$%^&*]*$/;
+  searchParamRegex: RegExp = /^[ 0-9a-zA-Z,.\-='!@#$%^&*():\/\\]*$/;
   
   public fromPriceFormControl!: FormControl;
   public toPriceFormControl!: FormControl;
