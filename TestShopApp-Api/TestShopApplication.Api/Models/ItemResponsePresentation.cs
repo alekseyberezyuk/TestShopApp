@@ -16,7 +16,7 @@ namespace TestShopApplication.Api.Models
 
         public ItemResponsePresentation(Item item)
         {
-            ItemId = item.ItemId;
+            ItemId = Guid.Parse(item.ItemId);
             Name = item.Name;
             Description = item.Description;
             Price = item.Price;

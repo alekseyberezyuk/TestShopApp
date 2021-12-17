@@ -4,9 +4,9 @@ namespace TestShopApplication.Dal.Models
 {
     public class Order
     {
-        public Guid OrderId { get; set; }
+        public string OrderId { get; set; }
         public decimal Price { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public OrderStatus Status { get; set; }
+        public long CreatedTimestamp { get; set; }
+        public string Status { get; set; }
     }
 }

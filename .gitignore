@@ -428,3 +428,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/TestShopApp-Api/www/
+!TestShopApp-Api/www/TestShopApp*.zip

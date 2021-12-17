@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ExtensionsPack.Core;
 using TestShopApplication.Dal.Models;
 using TestShopApplication.Dal.Repositories;
 using TestShopApplication.Api.Models;
@@ -29,7 +30,7 @@ namespace TestShopApplication.Api.Services
             var items = await _orderRepository.GetAll(orderId);
             return items.Select(i => new OrderItemPresentation
             {
-                ItemId = i.ItemId,
+                ItemId = Guid.Parse(i.ItemId),
                 Name = i.Description,
                 Price = i.Price,
                 Quantity = i.Quantity
@@ -40,16 +41,16 @@ namespace TestShopApplication.Api.Services
         {
             var order = new Order
             {
-                OrderId = Guid.NewGuid(),
-                CreatedAt = DateTime.UtcNow,
+                OrderId = Guid.NewGuid().ToString(),
+                CreatedTimestamp = DateTime.Now.ToUnixUtcTimeStamp(),
                 Price = items.Sum(i => i.Price),
-                Status = OrderStatus.Created
+                Status = OrderStatus.Created.ToString()
             };
 
             var orderItems = items.Select(i => new OrderItemDto
             {
                 OrderId = order.OrderId,
-                ItemId = i.ItemId,
+                ItemId = i.ItemId.ToString(),
                 Description = i.Description,
                 Name = i.Name,
                 Price = i.Price,

@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 using Dapper;
 using TestShopApplication.Dal.Models;
 
@@ -20,9 +20,13 @@ namespace TestShopApplication.Dal.Repositories
                          LEFT JOIN users USR
                          ON UD.[user_id]=USR.id
                          WHERE USR.id=@userId";
-            using var connection = new SqlConnection(ConnectionString);
-            var userDetails = connection.QueryFirst<UserDetails>(query, new { userId });
-            userDetails.UserId = userId;
+            using var connection = new SqliteConnection(ConnectionString);
+            var userDetails = connection.QueryFirstOrDefault<UserDetails>(query, new { userId });
+
+            if (userDetails != null)
+            {
+                userDetails.UserId = userId.ToString();
+            }
             return userDetails;
         }
 
@@ -34,7 +38,7 @@ namespace TestShopApplication.Dal.Repositories
             var query2 = @"UPDATE users
                            SET first_name=@firstName, last_name=@lastName
                            WHERE id=@userId";
-            using var connection = new SqlConnection(ConnectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             return connection.Execute(query1, userDetails) > 0
                 && connection.Execute(query2, userDetails) > 0;
         }

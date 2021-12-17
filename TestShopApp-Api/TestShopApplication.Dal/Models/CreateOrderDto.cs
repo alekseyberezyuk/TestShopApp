@@ -4,7 +4,7 @@ namespace TestShopApplication.Dal.Models
 {
     public class CreateOrderDto
     {
-        public Guid OrderId { get; set; }
+        public string OrderId { get; set; }
         
     }
 }

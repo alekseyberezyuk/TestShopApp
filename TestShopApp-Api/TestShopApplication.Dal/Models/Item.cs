@@ -4,7 +4,7 @@ namespace TestShopApplication.Dal.Models
 {
     public sealed class Item
     {
-        public Guid ItemId { get; set; }
+        public string ItemId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }

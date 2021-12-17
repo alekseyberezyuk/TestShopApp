@@ -71,7 +71,7 @@ namespace TestShopApplication.Api.Services
             }
             var addResult = await _itemsRepository.TryAdd(new Item
             {
-                ItemId = Guid.NewGuid(),
+                ItemId = Guid.NewGuid().ToString(),
                 Name = item.Name,
                 Description = item.Description,
                 Price = item.Price,
@@ -99,7 +99,7 @@ namespace TestShopApplication.Api.Services
             }
             var updateResult =  await _itemsRepository.TryUpdate(new Item
             {
-                ItemId = itemId,
+                ItemId = itemId.ToString(),
                 Name = item.Name,
                 Description = item.Description,
                 Price = item.Price,

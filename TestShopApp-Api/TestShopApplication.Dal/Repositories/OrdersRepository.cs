@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
-using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 using TestShopApplication.Dal.Models;
 
 namespace TestShopApplication.Dal.Repositories
@@ -20,7 +20,7 @@ namespace TestShopApplication.Dal.Repositories
             var request = $"SELECT order_id as orderId, price, status, created_at as createdAt " +
                           $"FROM [orders] " +
                           $"WHERE user_id='{userId}'";
-            using var connection = new SqlConnection(ConnectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.QueryAsync<Order>(request);
             return result;
         }

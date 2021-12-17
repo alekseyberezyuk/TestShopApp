@@ -42,8 +42,8 @@ namespace TestShopApplication.Api.Controllers
             var userId = GetUserId();
             return Ok(await _userCartService.AddItemToCart(new ShoppingCartItem
             {
-                ItemId = Guid.Parse(itemId),
-                UserId = userId,
+                ItemId = itemId,
+                UserId = userId.ToString(),
                 Quantity = quantity
             }));
         }
@@ -62,8 +62,8 @@ namespace TestShopApplication.Api.Controllers
             var userId = GetUserId();
             return Ok(await _userCartService.DeleteItemToCart(new ShoppingCartItem
             {
-                ItemId = itemId,
-                UserId = userId,
+                ItemId = itemId.ToString(),
+                UserId = userId.ToString(),
                 Quantity = quantity
             }));
         }

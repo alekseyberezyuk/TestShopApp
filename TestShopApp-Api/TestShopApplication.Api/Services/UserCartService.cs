@@ -1,3 +1,4 @@
+using ExtensionsPack.Core;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace TestShopApplication.Api.Services
 
         public async Task<Response<Guid>> AddItemToCart(ShoppingCartItem item)
         {
-            item.CreatedAt = DateTime.UtcNow;
+            item.AddedTimeStamp = DateTime.Now.ToUnixUtcTimeStamp();
             var id = await _userCartRepository.AddItemToCart(item);
             return new Response<Guid>
             {
@@ -33,17 +34,11 @@ namespace TestShopApplication.Api.Services
 
         public async Task<Response<bool>> DeleteItemToCart(ShoppingCartItem item)
         {
-            item.CreatedAt = DateTime.UtcNow;
+            item.AddedTimeStamp = DateTime.Now.ToUnixUtcTimeStamp();
             var result = await _userCartRepository.RemoveItemFromCart(item);
-            if (!result)
-                return new Response<bool>
-                {
-                    Success = false
-                };
-
             return new Response<bool>
             {
-                Success = true
+                Success = result
             };
         }
     }

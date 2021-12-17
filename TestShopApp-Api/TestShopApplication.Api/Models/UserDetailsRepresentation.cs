@@ -33,7 +33,7 @@ namespace TestShopApplication.Api.Models
 
         public UserDetailsRepresentation(UserDetails userDetails)
         {
-            Id = userDetails.UserId;
+            Id = Guid.Parse(userDetails.UserId);
             FirstName = userDetails.FirstName;
             LastName = userDetails.LastName;
             Country = userDetails.Country;
@@ -48,7 +48,7 @@ namespace TestShopApplication.Api.Models
         {
             return new UserDetails
             {
-                UserId = obj.Id,
+                UserId = obj.Id.ToString(),
                 FirstName = obj.FirstName,
                 LastName = obj.LastName,
                 Country = obj.Country,

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 using Dapper;
 using TestShopApplication.Dal.Models;
 
@@ -54,7 +54,7 @@ namespace TestShopApplication.Dal.Repositories
                 }
             }
             var query = sb.ToString().TrimEnd(',', ' ');
-            using var connection = new SqlConnection(ConnectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             var results = await connection.QueryAsync<Item>(query, parameters);
             return results;
         }
@@ -64,7 +64,7 @@ namespace TestShopApplication.Dal.Repositories
             string query = $"SELECT item_id as ItemId, name, description, price, i.category_id as categoryId, category_name as categoryName FROM [items] i " +
                            $"LEFT JOIN [item_categories] ic ON i.category_id = ic.category_id " +
                            $"WHERE item_id=@itemId AND is_deleted=0";
-            using var connection = new SqlConnection(ConnectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.QuerySingleAsync<Item>(query, new {itemId});
             return result;
         }
@@ -73,7 +73,7 @@ namespace TestShopApplication.Dal.Repositories
         {
             var request = $"INSERT INTO [items] (item_id, name, description, price, category_id, is_deleted)" +
                           $"VALUES(@itemId, @name, @description, @price, @categoryId, 0)";
-            using var connection = new SqlConnection(ConnectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
             {
                 itemId = item.ItemId,
@@ -82,7 +82,7 @@ namespace TestShopApplication.Dal.Repositories
                 price = item.Price,
                 categoryId = item.CategoryId
             });
-            return result > 0 ? item.ItemId : Guid.Empty;
+            return result > 0 ? Guid.Parse(item.ItemId) : Guid.Empty;
         }
 
         public async ValueTask<bool> TryUpdate(Item item)
@@ -91,7 +91,7 @@ namespace TestShopApplication.Dal.Repositories
                           $"SET name=@name, description=@description, " +
                           $"price=@price, category_id=@categoryId" +
                           $"WHERE item_id=@itemId";
-            using var connection = new SqlConnection(ConnectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
             {
                 itemId = item.ItemId,
@@ -108,7 +108,7 @@ namespace TestShopApplication.Dal.Repositories
             var request = $"UPDATE [items]" +
                           $"SET is_deleted=1" +
                           $"WHERE item_id=@itemId";
-            using var connection = new SqlConnection(ConnectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new { itemId });
             return result >= 0;
         }
@@ -117,7 +117,7 @@ namespace TestShopApplication.Dal.Repositories
         {
             var request = $"SELECT count(*) FROM [items]" +
                           $"WHERE name=@name";
-            using var connection = new SqlConnection(ConnectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.QuerySingleAsync<int>(request, new {name});
             return result > 0;
         }

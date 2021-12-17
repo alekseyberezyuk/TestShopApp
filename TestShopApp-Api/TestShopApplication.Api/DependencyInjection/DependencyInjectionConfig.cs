@@ -13,6 +13,7 @@ namespace TestShopApplication.Api.DependencyInjection
         public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
+            connectionString = connectionString.Replace("|DataDirectory|", configuration["appFolder"]).TrimEnd('\\');
 
             var assembly = typeof(IAuthRepository).Assembly;
             IEnumerable<(Type service, Type implementation)> typesToRegister = assembly
