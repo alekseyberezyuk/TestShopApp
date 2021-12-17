@@ -84,6 +84,10 @@ export class MainComponent implements OnInit {
   
   }
 
+  pageChanged(event) {
+    console.log(event);
+  }
+  
   ngOnInit(): void {
     this.categories = {};
     this.itemsService.getCategories().subscribe(categories => {
@@ -93,6 +97,7 @@ export class MainComponent implements OnInit {
     });
     this.itemsService.get(this.filterParameters).subscribe(itemsFromApi => {
       this.items = itemsFromApi;
+      console.log(this.items.length);
     });
     this.updateOrderbyOptions();
     this.translateService.onDefaultLangChange.subscribe(l => {

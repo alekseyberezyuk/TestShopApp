@@ -26,6 +26,8 @@ export class ItemService {
     if(filterParameters.orderBy != OrderBy.Default) {
       url += `&orderBy=${filterParameters.orderBy}`;
     }
+    url += `&itemsPerPage=5`;
+    url += `&pageNumber=1`;
     return this.http.get<Item[]>(url);  
   }
 
