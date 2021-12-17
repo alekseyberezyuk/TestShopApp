@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, AfterContentChecked, Component, ElementRef, OnInit, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { trigger, transition, animate, style } from '@angular/animations'
-import { AuthService } from 'src/app/services';
+import { AuthService, TranslationService } from 'src/app/services';
 
 @Component({
   selector: 'top-bar-panel',
@@ -32,14 +31,14 @@ export class TopBarPanelComponent implements OnInit, AfterContentChecked {
 
   constructor(
     public authService: AuthService,
-    private translateService: TranslateService,
+    private translationService: TranslationService,
     private router: Router,
     private ref: ChangeDetectorRef
     ) {
   }
 
   languageChanged() {
-    this.translateService.setDefaultLang(this.language);
+    this.translationService.setDefaultLang(this.language);
     localStorage.setItem('testshopapp-lang', this.language);
     // const currentUrl = this.router.url;
     // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
@@ -71,8 +70,8 @@ export class TopBarPanelComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit(): void {
-    this.language = localStorage.getItem('testshopapp-lang') || this.translateService.getDefaultLang();
-    this.translateService.setDefaultLang(this.language);
+    this.language = localStorage.getItem('testshopapp-lang') || this.translationService.getDefaultLang();
+    this.translationService.setDefaultLang(this.language);
     this.user = this.getUserName();
   }
 

@@ -12,7 +12,7 @@ export class ItemService {
   constructor(private http: HttpClient) { }
   
   // TODO: Add new pagination parameters here. Check Swagger to see parameters responsible for pagination
-  get(filterParameters: FilterParameters, currentPage: number) {
+  get(filterParameters: FilterParameters, currentPage: number, itemsPerPage: number) {
     let url = `${environment.baseUrl}/items?minPrice=${filterParameters.fromPrice || 0}`;
     if (filterParameters.toPrice) {
       url += `&maxPrice=${filterParameters.toPrice}`;
@@ -26,7 +26,10 @@ export class ItemService {
     if(filterParameters.orderBy != OrderBy.Default) {
       url += `&orderBy=${filterParameters.orderBy}`;
     }
-    url += `&itemsPerPage=5`;
+    if (itemsPerPage < 5) {
+      itemsPerPage = 5;
+    }
+    url += `&itemsPerPage=${itemsPerPage}`;
     url += `&pageNumber=${currentPage}`;
     return this.http.get<ItemsResponse>(url);  
   }
