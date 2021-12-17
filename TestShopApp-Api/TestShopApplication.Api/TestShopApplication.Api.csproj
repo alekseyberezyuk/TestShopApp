@@ -20,12 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Page Include="App_Data\TestShopApp.mdf">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      </Page>
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
       <PackageReference Include="Codemagicians.ExtensionsPack" Version="1.0.2" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.12" />
@@ -36,10 +30,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TestShopApplication.Dal\TestShopApplication.Dal.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Extensions\" />
     </ItemGroup>
 
 </Project>

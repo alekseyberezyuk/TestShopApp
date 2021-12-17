@@ -19,14 +19,14 @@ namespace TestShopApplication.Dal.Repositories
         public async ValueTask<IEnumerable<ShoppingCartContentItem>> GetShoppingCart(Guid userId)
         {
             var request = $"SELECT [user_carts].item_id, name, description, quantity, " +
-                          $"(price * quantity) as price, createdAt " +
+                          $"(price * quantity) as price, added_timestamp " +
                           $"FROM [user_carts] " +
                           $"LEFT JOIN [items] ON [user_carts].item_id = [items].item_id " +
                           $"WHERE user_id = @userId";
 
             using var connection = new SqliteConnection(ConnectionString);
             var results = await connection.QueryAsync<ShoppingCartContentItem>(request,
-                new {userId});
+                new {userId = userId.ToString()});
             return results;
         }
 
@@ -36,19 +36,19 @@ namespace TestShopApplication.Dal.Repositories
                           $"AND user_id=@userId) " +
                           $"BEGIN " +
                               $"UPDATE [user_carts] " +
-                              $"SET quantity=quantity+@quantity, createdAt=@createdAt " +
+                              $"SET quantity=quantity+@quantity, added_timestamp=@addedTimeStamp " +
                               $"WHERE item_id=@itemId AND user_id=@userId " +
                           $"END " +
                           $"ELSE " +
                           $"BEGIN " +
-                              $"INSERT INTO [user_carts](item_id, user_id, quantity, createdAt) " +
-                              "VALUES (@itemId, @userId, @quantity, @createdAt)" +
+                              $"INSERT INTO [user_carts](item_id, user_id, quantity, added_timestamp) " +
+                              "VALUES (@itemId, @userId, @quantity, @addedTimeStamp)" +
                           $"END ";
             await using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
                 {
-                    itemId = item.ItemId,
-                    userId = item.UserId,
+                    itemId = item.ItemId.ToString(),
+                    userId = item.UserId.ToString(),
                     quantity = item.Quantity,
                     addedTimeStamp = item.AddedTimeStamp
                 });
@@ -67,14 +67,14 @@ namespace TestShopApplication.Dal.Repositories
                           $"ELSE\r\n" +
                           $"BEGIN\r\n" +
                             $"UPDATE [user_carts] " +
-                            $"SET quantity=quantity-1,createdAt=@createdAt " +
+                            $"SET quantity=quantity-1,added_timestamp=@addedTimeStamp " +
                             $"WHERE item_id=@itemId AND user_id=@userId\r\n" +
                           $"END\r\n";
             using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
             {
-                itemId = item.ItemId,
-                userId = item.UserId,
+                itemId = item.ItemId.ToString(),
+                userId = item.UserId.ToString(),
                 quantity = item.Quantity,
                 addedTimeStamp = item.AddedTimeStamp
             });

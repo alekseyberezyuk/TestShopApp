@@ -43,7 +43,7 @@ namespace TestShopApplication.Api.Services
             {
                 OrderId = Guid.NewGuid().ToString(),
                 CreatedTimestamp = DateTime.Now.ToUnixUtcTimeStamp(),
-                Price = items.Sum(i => i.Price),
+                Price = items.Sum(i => i.Price * i.Quantity),
                 Status = OrderStatus.Created.ToString()
             };
 

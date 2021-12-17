@@ -65,18 +65,21 @@ namespace TestShopApplication.Dal.Repositories
                            $"LEFT JOIN [item_categories] ic ON i.category_id = ic.category_id " +
                            $"WHERE item_id=@itemId AND is_deleted=0";
             using var connection = new SqliteConnection(ConnectionString);
-            var result = await connection.QuerySingleAsync<Item>(query, new {itemId});
+            var result = await connection.QuerySingleAsync<Item>(query, new
+            {
+                itemId = itemId.ToString()
+            });
             return result;
         }
 
         public async ValueTask<Guid> TryAdd(Item item)
         {
-            var request = $"INSERT INTO [items] (item_id, name, description, price, category_id, is_deleted)" +
-                          $"VALUES(@itemId, @name, @description, @price, @categoryId, 0)";
+            var request = $"INSERT INTO [items] (item_id, name, description, price, category_id, is_deleted) " +
+                          $"VALUES (@itemId, @name, @description, @price, @categoryId, 0)";
             using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
             {
-                itemId = item.ItemId,
+                itemId = item.ItemId.ToString(),
                 name = item.Name,
                 description = item.Description,
                 price = item.Price,
@@ -89,12 +92,12 @@ namespace TestShopApplication.Dal.Repositories
         {
             var request = $"UPDATE [items] " +
                           $"SET name=@name, description=@description, " +
-                          $"price=@price, category_id=@categoryId" +
+                          $"price=@price, category_id=@categoryId " +
                           $"WHERE item_id=@itemId";
             using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.ExecuteAsync(request, new
             {
-                itemId = item.ItemId,
+                itemId = item.ItemId.ToString(),
                 name = item.Name,
                 description = item.Description,
                 price = item.Price,
@@ -105,17 +108,17 @@ namespace TestShopApplication.Dal.Repositories
 
         public async ValueTask<bool> TryDelete(Guid itemId)
         {
-            var request = $"UPDATE [items]" +
-                          $"SET is_deleted=1" +
+            var request = $"UPDATE [items] " +
+                          $"SET is_deleted=1 " +
                           $"WHERE item_id=@itemId";
             using var connection = new SqliteConnection(ConnectionString);
-            var result = await connection.ExecuteAsync(request, new { itemId });
+            var result = await connection.ExecuteAsync(request, new { itemId = itemId.ToString()});
             return result >= 0;
         }
 
         public async ValueTask<bool> Exists(string name)
         {
-            var request = $"SELECT count(*) FROM [items]" +
+            var request = $"SELECT count(*) FROM [items] " +
                           $"WHERE name=@name";
             using var connection = new SqliteConnection(ConnectionString);
             var result = await connection.QuerySingleAsync<int>(request, new {name});
