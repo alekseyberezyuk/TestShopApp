@@ -44,5 +44,11 @@
 		"invalidPwd": "Please enter a valid password",
 		"emailRequired": "Email is required",
 		"pwdRequired": "Password is required"
+	},
+	"paginator": {
+		"itemsPerPage": "Items per page",
+		"nextPage": "Next page",
+		"prevPage": "Previous page",
+		"rangeLabel": "Page"
 	}
 }

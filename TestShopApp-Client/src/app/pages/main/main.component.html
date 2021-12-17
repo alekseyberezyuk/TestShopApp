@@ -33,7 +33,8 @@
           </mat-card>
             <!-- TODO: We need to start limiting the number of items we display and subscribe to event when mat-paginator value has changed.
                        We should also change the code in ItemService to request the next/previous items -->
-          <mat-paginator
+          <mat-paginator 
+           #paginator
            (page)="pageChanged($event.pageIndex)"
            [length]="itemsTotal"
            [pageSize]="5">

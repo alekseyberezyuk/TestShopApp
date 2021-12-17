@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
@@ -8,15 +8,17 @@ import { Item, OrderBy } from 'src/app/models/index';
 import { FilterParameters } from 'src/app/models/filterParameters';
 import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, AfterViewInit {
   @ViewChild('drawer') drawer!: MatSlideToggle;
   @ViewChild('toggleFiltersBtn') toggleFiltersBtn!: MatButton;
+  @ViewChild('paginator') paginator!: MatPaginator;
 
   filterOpened: boolean = environment.appSettings.filterOpenedByDefault;
   items!: Item[];
@@ -36,9 +38,11 @@ export class MainComponent implements OnInit {
 
   constructor(private itemsService: ItemService, private translateService: TranslateService, private router: Router) {
   }
+  
 
   toggleFilterBtnClicked() {
     this.drawer.toggle();
+    
     const nativeElement = this.toggleFiltersBtn._elementRef.nativeElement;
 
     if (nativeElement.className.includes('show-filter-btn')) {
@@ -93,7 +97,23 @@ export class MainComponent implements OnInit {
       this.itemsTotal = itemResponseFromApi.totalItems;  
     });
   }
-
+  
+  translatePaginator() {
+    firstValueFrom(this.translateService.get('paginator.itemsPerPage')).then(t => {
+      this.paginator._intl.itemsPerPageLabel = t;
+    });
+    firstValueFrom(this.translateService.get('paginator.nextPage')).then(t => {
+      this.paginator._intl.nextPageLabel = t;
+    });
+    firstValueFrom(this.translateService.get('paginator.prevPage')).then(t => {
+      this.paginator._intl.previousPageLabel = t;
+    });
+    firstValueFrom(this.translateService.get('paginator.rangeLabel')).then(t => {
+      this.paginator._intl.getRangeLabel = () => t;
+    });
+    this.paginator.hasNextPage();
+  }
+  
   ngOnInit(): void {
     this.categories = {};
     this.itemsService.getCategories().subscribe(categories => {
@@ -105,6 +125,11 @@ export class MainComponent implements OnInit {
     this.updateOrderbyOptions();
     this.translateService.onDefaultLangChange.subscribe(l => {
       this.updateOrderbyOptions();
+      this.translatePaginator();
     });
+  }
+
+  ngAfterViewInit(): void {
+    //this.translatePaginator();
   }
 }
