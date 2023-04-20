@@ -18,6 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="TestShopApplication.Shared">
+      <HintPath>..\..\TestShopApp-Api\TestShopApplication.Shared\bin\Debug\net6.0\TestShopApplication.Shared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Configuration\configuration.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

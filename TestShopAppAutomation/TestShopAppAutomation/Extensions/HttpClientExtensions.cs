@@ -15,5 +15,13 @@ namespace TestShopAppAutomation.Extensions
 
             return response;
         }
+
+        internal static async Task<HttpResponseMessage> Get<T>(this HttpClient client, string url)
+        {
+            HttpResponseMessage response = await client.GetAsync(url);
+            client.Dispose();
+
+            return response;
+        }
     }
 }
