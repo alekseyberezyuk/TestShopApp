@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TestShopApplication.Shared.ApiModels
+namespace TestShopApplication.Shared.Dtos
 {
     public sealed class Response<T>
     {

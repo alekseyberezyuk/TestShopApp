@@ -2,7 +2,7 @@ using ExtensionsPack.Core;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TestShopApplication.Api.Models;
+using TestShopApplication.Shared.ApiModels;
 using TestShopApplication.Dal.Models;
 using TestShopApplication.Dal.Repositories;
 

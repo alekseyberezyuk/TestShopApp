@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestShopApplication.Dal.Models;
-using TestShopApplication.Api.Models;
+using TestShopApplication.Shared.ApiModels;
 using TestShopApplication.Api.Services;
 using TestShopApplication.Api.Validators;
 

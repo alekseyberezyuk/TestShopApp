@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TestShopApplication.Api.Models;
+using TestShopApplication.Shared.ApiModels;
 using TestShopApplication.Api.Services;
 
 namespace TestShopApplication.Api.Controllers

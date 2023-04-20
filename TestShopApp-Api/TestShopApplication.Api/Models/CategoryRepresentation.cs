@@ -1,7 +1,7 @@
 ﻿using System;
 using TestShopApplication.Dal.Models;
 
-namespace TestShopApplication.Api.Models
+namespace TestShopApplication.Shared.ApiModels
 {
     public sealed class CategoryRepresentation
     {

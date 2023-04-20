@@ -1,4 +1,4 @@
-﻿namespace TestShopApplication.Shared.ApiModels
+﻿namespace TestShopApplication.Shared.Dtos
 {
     public sealed class AuthResponsePresentation
     {

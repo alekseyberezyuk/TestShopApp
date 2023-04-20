@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestShopApplication.Dal.Models;
 using TestShopApplication.Dal.Repositories;
-using TestShopApplication.Api.Models;
+using TestShopApplication.Shared.ApiModels;
 using ExtensionsPack.Core;
 
 namespace TestShopApplication.Api.Services

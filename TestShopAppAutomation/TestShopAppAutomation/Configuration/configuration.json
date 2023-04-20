@@ -1,0 +1,13 @@
+﻿{
+  "baseUrl": "http://localhost:4200",
+  "loginPageUrl": "login",
+  "mainPageUrl": "main",
+  "testUserAccountCreds": {
+    "username": "user@testshopapp.com",
+    "password": "User12#"
+  },
+  "apiSettings": {
+    "baseUrl": "https://localhost:5001",
+    "auth": "Auth" 
+  }
+}

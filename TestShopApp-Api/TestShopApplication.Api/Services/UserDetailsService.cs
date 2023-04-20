@@ -1,7 +1,7 @@
 ﻿using System;
 using TestShopApplication.Dal.Models;
 using TestShopApplication.Dal.Repositories;
-using TestShopApplication.Api.Models;
+using TestShopApplication.Shared.ApiModels;
 
 namespace TestShopApplication.Api.Services
 {
